@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 416d24ae1f6ffb3449fb0177c875d004
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - defaultMaterial: {fileID: 2100000, guid: 1ec95c9c5bca4a349a717f754efded97, type: 2}
+  - TileMap: {fileID: 4900000, guid: 35008dd181fb65f48846ee84891a1c78, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
