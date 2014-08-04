@@ -195,6 +195,7 @@ namespace X_UniTMX
 					{
 						this.Tiles.Add(item.Key, item.Value);
 					}
+					t.CacheWorldDims(TileWidth, TileHeight);
 				}
 				else
 				{
@@ -204,6 +205,7 @@ namespace X_UniTMX
 					{
 						this.Tiles.Add(item.Key, item.Value);
 					}
+					t.CacheWorldDims(TileWidth, TileHeight);
 				}
 			}
 			// Generate Materials for Map batching
