@@ -8,9 +8,9 @@ public class GameMap : Singleton<GameMap>
 	public TileGrid mainGrid { get; private set; }
 
 	public void Initialize(Map map) {
-		Debug.Log ("Game Map successfully initialized!");
-
 		this.map = map;
+
+		this.mainGrid = map.GetTileLayer("Terreno").Tiles;
 	}
 
 	protected GameMap () {}

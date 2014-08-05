@@ -6,10 +6,10 @@ public enum EnumPlayerState {STAY=1,RIGHT=2,LEFT=3,DOWN=4,UP=5};
 
 public class CharacterController : MonoBehaviour {
 
-	#region Tile Data
+	#region Script Data
 
 
-
+	public PathScript playerPathing;
 
 
 	#endregion
@@ -58,8 +58,6 @@ public class CharacterController : MonoBehaviour {
 	void Update() {
 		CalculateShootTime ();
 
-		HandlePlayerControls ();
-
 		ApplyAnimation ();
 		HandlePlayerBlink();
 	}
@@ -74,18 +72,6 @@ public class CharacterController : MonoBehaviour {
 		}
 	}
 
-	private void HandlePlayerControls ()
-	{
-		if(Input.GetButtonDown("Fire1")) {
-			Vector2 mousePoint = Input.mousePosition;
-			Vector2 worldPoint = Camera.main.ScreenToWorldPoint(mousePoint);
-			Map gameMap = GameMap.Instance.map;
-			Debug.Log (GameMap.Instance);
-			Vector2 tileIndices = gameMap.WorldPointToTileIndex(worldPoint);
-			Debug.Log("Clicked " + mousePoint + ":" + worldPoint + " (" + tileIndices + ")");
-		}
-	}
-	
 	private void ApplyPlayerVelocity ()
 	{
 		rigidbody2D.velocity = velocityVector;

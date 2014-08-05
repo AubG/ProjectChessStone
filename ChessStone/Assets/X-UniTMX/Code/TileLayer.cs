@@ -216,6 +216,8 @@ namespace X_UniTMX
 				for (int y = Height - 1; y > -1; y--)
 				{
 					t = Tiles[x, y];
+					Vector2 tileDims = Vector2.zero;
+
 					if(t != null) {
 						Vector3 pos = Vector3.zero;
 						// Set Tile's position according to map orientation

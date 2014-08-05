@@ -27,6 +27,7 @@ namespace X_UniTMX
 		public string Name;
 		public int TileWidth;
 		public int TileHeight;
+		public Vector2 WorldDims;
 		public int Spacing = 0;
 		public int Margin = 0;
 		public string Image;
@@ -124,7 +125,11 @@ namespace X_UniTMX
 				}
 			}
 		}
-		
+
+		public void CacheWorldDims(int worldWidth, int worldHeight) {
+			WorldDims = new Vector2(worldWidth / (float)TileWidth,
+			                        (worldHeight / (float)TileHeight) * ((float)TileHeight / (float)TileWidth));
+		}
 	}
 
 }
