@@ -59,14 +59,14 @@
  </tileset>
  <layer name="Terreno" width="60" height="60">
   <data encoding="base64" compression="gzip">
-   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
+   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
   </data>
  </layer>
  <objectgroup name="Collider_0" width="60" height="60">
   <object name="Parede" type="Collider" x="432" y="816" width="224" height="64"/>
   <object name="Parede" type="Collider" x="752" y="816" width="416" height="64"/>
   <object name="Parede" type="Collider" x="1104" y="464" width="64" height="352"/>
-  <object name="Blue Potion" type="NoCollider" x="749" y="688" width="32" height="32">
+  <object name="Blue Potion" type="NoCollider" x="736" y="672" width="32" height="32">
    <properties>
     <property name="0-prefab" value="HealDrunks_Blue"/>
     <property name="0-prefab add collider" value="false"/>
@@ -76,7 +76,7 @@
     <property name="transfer collider" value="false"/>
    </properties>
   </object>
-  <object name="Yellow Potion" type="NoCollider" x="989" y="1010" width="32" height="32">
+  <object name="Yellow Potion" type="NoCollider" x="960" y="992" width="32" height="32">
    <properties>
     <property name="0-prefab" value="HealDrunks_Yellow"/>
     <property name="0-prefab add collider" value="false"/>
@@ -86,13 +86,10 @@
     <property name="transfer collider" value="false"/>
    </properties>
   </object>
-  <object name="Cruz" type="Collider" x="1232" y="1168">
-   <polyline points="0,0 32,0 32,32 64,32 64,64 32,64 32,160 0,160 0,64 -32,64 -32,32 0,32 0,0"/>
-  </object>
   <object name="Parede" type="Collider" x="880" y="272">
    <polygon points="-607,0 768,0 769,1374 -607,1378 -543,1312 704,1312 704,64 -542,65"/>
   </object>
-  <object name="Player" type="NoCollider" x="544" y="512" width="64" height="64">
+  <object name="Player" type="NoCollider" x="544" y="512" width="32" height="32">
    <properties>
     <property name="0-prefab" value="Player"/>
     <property name="0-prefab add collider" value="false"/>
@@ -139,7 +136,7 @@
     <property name="transfer collider" value="false"/>
    </properties>
   </object>
-  <object name="Scorpion" type="NoCollider" x="760" y="532" width="32" height="32">
+  <object name="Scorpion" type="NoCollider" x="768" y="512" width="32" height="32">
    <properties>
     <property name="0-prefab" value="Scorpion_Down_Stay"/>
     <property name="0-prefab add collider" value="false"/>

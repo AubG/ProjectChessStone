@@ -77,6 +77,8 @@ namespace X_UniTMX
 		/// </summary>
 		public float Rotation { get; set; }
 
+		public GameObject go { get; set; }
+
 		/// <summary>
 		/// Creates a new MapObject.
 		/// </summary>
@@ -270,6 +272,7 @@ namespace X_UniTMX
 		{
 			if(GID > 0) {
 				Tile objTile = tiledMap.Tiles[GID].Clone();
+				Debug.Log (Name);
 				objTile.CreateTileObject(Name,
 					tiledMap.MapObject.transform,
 					sortingLayerName,

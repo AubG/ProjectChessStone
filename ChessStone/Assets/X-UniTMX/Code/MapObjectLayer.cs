@@ -113,10 +113,16 @@ namespace X_UniTMX
                     // save that name
 					mapObjectContent.Name = objectName;
                 }
-				mapObjectContent.CreateTileObject(tiledMap, Name, layerDepth, materials);
+				//mapObjectContent.CreateTileObject(tiledMap, Name, layerDepth, materials);
 
 				AddObject(mapObjectContent);
             }
+
+			foreach(MapObject o in Objects) {
+				if(o.Type == "NoCollider") {
+					//Debug.Log (o.Name + " (" + o.MapObjectType + ")");
+				}
+			}
         }
 
 		internal MapObjectLayer(string name, int width, int height, int layerDepth, bool visible, float opacity, PropertyCollection properties, List<MapObject> initialObjects)

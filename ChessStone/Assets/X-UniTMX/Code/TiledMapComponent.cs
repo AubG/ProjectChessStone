@@ -59,9 +59,9 @@ public class TiledMapComponent : MonoBehaviour {
 			return false;
 		}
 		tiledMap = new Map(MapTMX, MakeUniqueTiles, MapTMXPath, gameObject, materialDefaultFile, DefaultSortingOrder);
-		GameMap.Instance.Initialize(tiledMap);
 		Resources.UnloadUnusedAssets();
 		if (GenerateCollider) GenerateColliders();
+		GameMap.Instance.Initialize(tiledMap);
 		return true;
 	}
 
@@ -100,6 +100,8 @@ public class TiledMapComponent : MonoBehaviour {
 							Destroy(newColliderObject.collider);
 						}
 					}
+
+					//Debug.Log (newColliderObject);
 				}
 			}
 			else
