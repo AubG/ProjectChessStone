@@ -6,14 +6,6 @@ public enum EnumPlayerState {STAY=1,RIGHT=2,LEFT=3,DOWN=4,UP=5};
 
 public class CharacterController : MonoBehaviour {
 
-	#region Script Data
-
-
-	public PathScript playerPathing;
-
-
-	#endregion
-
 	#region Game Data
 
 

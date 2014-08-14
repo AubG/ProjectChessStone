@@ -61,11 +61,15 @@ namespace X_UniTMX
 		/// </summary>
         public GameObject TileObject { get; set; }
 
+		///<summary>
+		/// Gets or sets the Unit that is currently on this tile.
+		/// </summary>
+		public GameUnit currUnit { get; set; }
+
 		/// <summary>
 		/// Gets or sets this Tile's Sprite
 		/// </summary>
 		public Sprite TileSprite { get; set; }
-
         /// <summary>
         /// Creates a new Tile object.
         /// </summary>

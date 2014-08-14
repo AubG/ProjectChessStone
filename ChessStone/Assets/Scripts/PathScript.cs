@@ -7,6 +7,14 @@ public class PathScript : MonoBehaviour
 {
 	public GameObject rangePrefab;
 	public GameObject adjPrefab;
+	
+	#region Unit Data
+	
+	
+	private GameCharacter character;
+	
+	
+	#endregion
 
 	#region Tile Data
 
@@ -50,13 +58,20 @@ public class PathScript : MonoBehaviour
 
 
 	void Start() {
+		if(!character) {
+			character = GetComponent<GameCharacter>();
+			if(!character) {
+				Debug.LogError("Unit script has not been assigned to " + this.gameObject.name + "!");
+				return;
+			}
+		}
+
 		rangeTiles = new List<Tile>();
 		rangeTileObjs = new List<GameObject>();
 		adjTiles = new List<Tile>();
 		adjTileObjs = new List<GameObject>();
 
 		ResetMoves();
-		SetTile(21, 21);
 	}
 
 
@@ -71,10 +86,29 @@ public class PathScript : MonoBehaviour
 	public void SetTile(int tileX, int tileY) {
 		currTile = GameMap.Instance.mainGrid[tileX, tileY];
 		currTileX = tileX; currTileY = tileY;
-		Map map = GameMap.Instance.map; 
+		
+		currTile.currUnit = character;
+		
+		// set the position to the tile's position
 		Transform tileTransform = currTile.TileObject.transform;
 		transform.position = tileTransform.position + new Vector3(currTile.TileSet.WorldDims.x * 0.5f, currTile.TileSet.WorldDims.y * 0.5f, 0);
 			
+		ComputeTiles();
+	}
+
+	public void SetTile(Tile moveTile) {
+		currTile = moveTile;
+		currTile.currUnit = character;
+
+		Map map = GameMap.Instance.map; 
+		// set the position to the tile's position
+		Transform tileTransform = currTile.TileObject.transform;
+		Vector3 tilePos = tileTransform.position + new Vector3(currTile.TileSet.WorldDims.x * 0.5f, currTile.TileSet.WorldDims.y * 0.5f, 0);
+		transform.position = tilePos;
+
+		Vector2 tileIndices = map.WorldPointToTileIndex(tilePos);
+		currTileX = (int)tileIndices.x; currTileY = (int)tileIndices.y;
+		
 		ComputeTiles();
 	}
 
@@ -88,13 +122,22 @@ public class PathScript : MonoBehaviour
 	public void IssueTileMoveOrder(Vector2 targetIndices) {
 		if(movesLeft <= 0) return;
 
-		movesLeft--;
-
 		Tile moveTile = GameMap.Instance.mainGrid[(int)targetIndices.x, (int)targetIndices.y];
 		if(!adjTiles.Contains(moveTile)) return;
 
-		//StartCoroutine("MoveToTile", targetIndices);
+		movesLeft--;
+
 		SetTile ((int)targetIndices.x, (int)targetIndices.y);
+	}
+
+	public void IssueTileMoveOrder(Tile moveTile) {
+		if(movesLeft <= 0) return;
+
+		if(!adjTiles.Contains(moveTile)) return;
+
+		movesLeft--;
+
+		SetTile (moveTile);
 	}
 
 	private IEnumerator MoveToTile(Vector2 targetIndices) {
@@ -115,6 +158,18 @@ public class PathScript : MonoBehaviour
 		movesLeft = moveRange;
 	}
 
+	public void ShowTiles() {
+		foreach(Tile t in rangeTiles) {
+			Transform tileTransform = t.TileObject.transform;
+			Vector3 newPos = tileTransform.position + new Vector3(t.TileSet.WorldDims.x * 0.5f, t.TileSet.WorldDims.y * 0.5f, 0);
+			
+			if(adjTiles.Contains(t))
+				adjTileObjs.Add(Instantiate(adjPrefab, newPos, Quaternion.identity) as GameObject);
+			else
+				rangeTileObjs.Add(Instantiate(rangePrefab, newPos, Quaternion.identity) as GameObject);
+		}
+	}
+
 
 	#endregion
 
@@ -124,10 +179,8 @@ public class PathScript : MonoBehaviour
 	private void ComputeTiles() {
 		rangeTiles.Clear();
 		adjTiles.Clear();
-		foreach(GameObject g in rangeTileObjs) Destroy (g);
-		foreach(GameObject g in adjTileObjs) Destroy (g);
-		rangeTileObjs.Clear();
-		adjTileObjs.Clear();
+		ClearShownTiles ();
+
 
 		int i, j, 
 			modTileX, modTileY,
@@ -153,17 +206,15 @@ public class PathScript : MonoBehaviour
 
 			jCount++;
 		}
-
-		foreach(Tile t in rangeTiles) {
-			Transform tileTransform = t.TileObject.transform;
-			Vector3 newPos = tileTransform.position + new Vector3(t.TileSet.WorldDims.x * 0.5f, t.TileSet.WorldDims.y * 0.5f, 0);
-
-			if(adjTiles.Contains(t))
-				adjTileObjs.Add(Instantiate(adjPrefab, newPos, Quaternion.identity) as GameObject);
-			else
-				rangeTileObjs.Add(Instantiate(rangePrefab, newPos, Quaternion.identity) as GameObject);
-		}
 	}
+
+	public void ClearShownTiles(){
+		foreach(GameObject g in rangeTileObjs) Destroy (g);
+		foreach(GameObject g in adjTileObjs) Destroy (g);
+
+		rangeTileObjs.Clear();
+		adjTileObjs.Clear();
+		}
 
 
 	#endregion
