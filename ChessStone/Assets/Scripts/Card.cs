@@ -4,8 +4,8 @@ using System.Collections;
 public class Card : MonoBehaviour {
 
 	public int cost;
-	public string img_path;
 	public string tag;
+	public int id;
 
 	// Use this for initialization
 	void Start () {
