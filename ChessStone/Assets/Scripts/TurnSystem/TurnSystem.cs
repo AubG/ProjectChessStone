@@ -42,7 +42,23 @@ public class TurnSystem : MonoBehaviour {
 
 
 	#endregion
-	
+
+	#region Time Data
+
+
+	[SerializeField]
+	private UILabel timeLeftLabel;
+
+	[SerializeField]
+	private float timeBetweenTurns = 150f;
+
+	private float timeLeft = 0f;
+
+
+	#endregion
+
+	public TurnInfo playerTurnInfo { get; private set; }
+	public TurnInfo enemyTurnInfo { get; private set; }
 	public event TurnEnded enemyTurnEnded;
 	public event TurnEnded playerTurnEnded;
 	private int turnNumber = 1;
@@ -55,16 +71,18 @@ public class TurnSystem : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		GameMap.Instance.InitializeObjects ();
-
+		StartCoroutine(UpdateTime ());
 		StartCoroutine(UpdateState());
 		//Immediately start our loop
+
+		BaseSpell spell = SpellDatabase.FindByName("Blood Cleave");
 	}
 
 
 	#endregion
 	
 	// Update is called once per frame
-	IEnumerator UpdateState() {
+	private IEnumerator UpdateState() {
 		while(true) {
 			//This is short hand for infinity loop.  Same as while(true).   
 			yield return StartCoroutine(PlayerTurn());
@@ -72,9 +90,19 @@ public class TurnSystem : MonoBehaviour {
 			//Before we continue.
 		}
 	}
+
+	private IEnumerator UpdateTime() {
+		while(timeLeft >= 0f) {
+			timeLeft -= Time.deltaTime;
+			UpdateTimeDisplay();
+			yield return null;
+		}
+	}
 	
-	IEnumerator PlayerTurn() {
+	private IEnumerator PlayerTurn() {
 		currState = State.Begin;
+		timeLeft = timeBetweenTurns;
+
 		while(currState != State.End) {
 			switch(currState) {
 				case State.Begin:
@@ -90,6 +118,10 @@ public class TurnSystem : MonoBehaviour {
 		}
 
 		yield return StartCoroutine(HandleEnd ());
+	}
+
+	private void UpdateTimeDisplay() {
+		timeLeftLabel.text = "Time Left: " + (int)timeLeft;
 	}
 
 	private IEnumerator HandleBegin() {

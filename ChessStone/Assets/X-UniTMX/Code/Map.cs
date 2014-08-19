@@ -1621,7 +1621,6 @@ namespace X_UniTMX
 
 					// SEE HERE THE PREFABS NEED TO BE ADDED INTO A LIST OR THE UNITS NEEDED TO BE ADDED TO A LIST
 					obj.go = newPrefab;
-					Debug.Log ("found a prefab to add at: " + newPrefab.name);
 				}
 				else
 				{
