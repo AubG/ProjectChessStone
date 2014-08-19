@@ -3,10 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using X_UniTMX;
 
+/// <summary>
+/// Each GameCharacter must have a pathing script associated with it that
+/// handles tile movement and interaction.
+/// </summary>
 public class PathScript : MonoBehaviour
 {
-	public GameObject rangePrefab;
-	public GameObject adjPrefab;
+	#region Graphics Data
+
+
+	[SerializeField]
+	private GameObject rangePrefab;
+
+	[SerializeField]
+	private GameObject adjPrefab;
+
+
+	#endregion
 	
 	#region Unit Data
 	
@@ -37,8 +50,8 @@ public class PathScript : MonoBehaviour
 	/// </summary>
 	public List<Tile> rangeTiles { get; private set; }
 
-	public List<GameObject> adjTileObjs { get; private set; }
-	public List<GameObject> rangeTileObjs { get; private set; }
+	private List<GameObject> adjTileObjs;
+	private List<GameObject> rangeTileObjs;
 
 
 	#endregion
@@ -49,6 +62,9 @@ public class PathScript : MonoBehaviour
 	[SerializeField]
 	private int moveRange;
 
+	/// <summary>
+	/// Gets the moves left for this path.
+	/// </summary>
 	public int movesLeft { get; private set; }
 
 
@@ -81,7 +97,8 @@ public class PathScript : MonoBehaviour
 	
 
 	/// <summary>
-	/// Immediately moves to a new tile defined by its x & y indices.
+	/// Immediately moves to a new tile defined by its x & y indices 
+	/// on the main tile grid.
 	/// </summary>
 	public void SetTile(int tileX, int tileY) {
 		currTile = GameMap.Instance.mainGrid[tileX, tileY];
@@ -96,6 +113,9 @@ public class PathScript : MonoBehaviour
 		ComputeTiles();
 	}
 
+	/// <summary>
+	/// Immediately moves to a new tile.
+	/// </summary>
 	public void SetTile(Tile moveTile) {
 		currTile = moveTile;
 		currTile.currUnit = character;
@@ -130,6 +150,9 @@ public class PathScript : MonoBehaviour
 		SetTile ((int)targetIndices.x, (int)targetIndices.y);
 	}
 
+	/// <summary>
+	/// Issues a move order to that moves to the specified tile.
+	/// </summary>
 	public void IssueTileMoveOrder(Tile moveTile) {
 		if(movesLeft <= 0) return;
 
@@ -154,10 +177,16 @@ public class PathScript : MonoBehaviour
 		Debug.Log ("finished");
 	}
 
+	/// <summary>
+	/// Resets the moves for this pathing.
+	/// </summary>
 	public void ResetMoves() {
 		movesLeft = moveRange;
 	}
 
+	/// <summary>
+	/// Shows the tiles in range and adjacent tiles.
+	/// </summary>
 	public void ShowTiles() {
 		foreach(Tile t in rangeTiles) {
 			Transform tileTransform = t.TileObject.transform;
@@ -168,6 +197,23 @@ public class PathScript : MonoBehaviour
 			else
 				rangeTileObjs.Add(Instantiate(rangePrefab, newPos, Quaternion.identity) as GameObject);
 		}
+	}
+
+
+	#endregion
+
+	#region Public Interaction
+
+
+	/// <summary>
+	/// Clears the shown in-range and adjacent tiles.
+	/// </summary>
+	public void ClearShownTiles() {
+		foreach(GameObject g in rangeTileObjs) Destroy (g);
+		foreach(GameObject g in adjTileObjs) Destroy (g);
+		
+		rangeTileObjs.Clear();
+		adjTileObjs.Clear();
 	}
 
 
@@ -207,14 +253,6 @@ public class PathScript : MonoBehaviour
 			jCount++;
 		}
 	}
-
-	public void ClearShownTiles(){
-		foreach(GameObject g in rangeTileObjs) Destroy (g);
-		foreach(GameObject g in adjTileObjs) Destroy (g);
-
-		rangeTileObjs.Clear();
-		adjTileObjs.Clear();
-		}
 
 
 	#endregion

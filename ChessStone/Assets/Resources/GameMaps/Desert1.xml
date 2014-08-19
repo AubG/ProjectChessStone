@@ -138,7 +138,7 @@
   </object>
   <object name="Scorpion" type="NoCollider" x="768" y="512" width="32" height="32">
    <properties>
-    <property name="0-prefab" value="Scorpion_Down_Stay"/>
+    <property name="0-prefab" value="Scorpion"/>
     <property name="0-prefab add collider" value="false"/>
     <property name="0-prefab detach" value="true"/>
     <property name="0-prefab path" value="Prefabs/"/>
