@@ -74,6 +74,8 @@ public class TurnSystem : MonoBehaviour {
 		StartCoroutine(UpdateTime ());
 		StartCoroutine(UpdateState());
 		//Immediately start our loop
+
+		BaseSpell spell = SpellDatabase.FindByName("Blood Cleave");
 	}
 
 

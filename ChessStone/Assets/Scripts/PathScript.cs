@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using X_UniTMX;
 
+/// <summary>
+/// Each GameCharacter must have a pathing script associated with it that
+/// handles tile movement and interaction.
+/// </summary>
 public class PathScript : MonoBehaviour
 {
-	public GameObject rangePrefab;
-	public GameObject adjPrefab;
 	
 	#region Unit Data
 	
@@ -37,19 +39,16 @@ public class PathScript : MonoBehaviour
 	/// </summary>
 	public List<Tile> rangeTiles { get; private set; }
 
-	public List<GameObject> adjTileObjs { get; private set; }
-	public List<GameObject> rangeTileObjs { get; private set; }
-
 
 	#endregion
 
-	#region Move Data
+	#region Range Data
 
+	
+	public int tileRange { get; private set; }
 
 	[SerializeField]
 	private int moveRange;
-
-	public int movesLeft { get; private set; }
 
 
 	#endregion
@@ -67,9 +66,7 @@ public class PathScript : MonoBehaviour
 		}
 
 		rangeTiles = new List<Tile>();
-		rangeTileObjs = new List<GameObject>();
 		adjTiles = new List<Tile>();
-		adjTileObjs = new List<GameObject>();
 
 		ResetMoves();
 	}
@@ -81,7 +78,8 @@ public class PathScript : MonoBehaviour
 	
 
 	/// <summary>
-	/// Immediately moves to a new tile defined by its x & y indices.
+	/// Immediately moves to a new tile defined by its x & y indices 
+	/// on the main tile grid.
 	/// </summary>
 	public void SetTile(int tileX, int tileY) {
 		currTile = GameMap.Instance.mainGrid[tileX, tileY];
@@ -93,9 +91,12 @@ public class PathScript : MonoBehaviour
 		Transform tileTransform = currTile.TileObject.transform;
 		transform.position = tileTransform.position + new Vector3(currTile.TileSet.WorldDims.x * 0.5f, currTile.TileSet.WorldDims.y * 0.5f, 0);
 			
-		ComputeTiles();
+		ComputeTiles(tileRange);
 	}
 
+	/// <summary>
+	/// Immediately moves to a new tile.
+	/// </summary>
 	public void SetTile(Tile moveTile) {
 		currTile = moveTile;
 		currTile.currUnit = character;
@@ -109,7 +110,7 @@ public class PathScript : MonoBehaviour
 		Vector2 tileIndices = map.WorldPointToTileIndex(tilePos);
 		currTileX = (int)tileIndices.x; currTileY = (int)tileIndices.y;
 		
-		ComputeTiles();
+		ComputeTiles(tileRange);
 	}
 
 	/// <summary>
@@ -120,24 +121,27 @@ public class PathScript : MonoBehaviour
 	}
 
 	public void IssueTileMoveOrder(Vector2 targetIndices) {
-		if(movesLeft <= 0) return;
+		if(tileRange <= 0) return;
 
 		Tile moveTile = GameMap.Instance.mainGrid[(int)targetIndices.x, (int)targetIndices.y];
 		if(!adjTiles.Contains(moveTile)) return;
 
-		movesLeft--;
+		tileRange--;
 
 		SetTile ((int)targetIndices.x, (int)targetIndices.y);
 	}
 
-	public void IssueTileMoveOrder(Tile moveTile) {
-		if(movesLeft <= 0) return;
+	/// <summary>
+	/// Issues a move order to that moves to the specified tile.
+	/// </summary>
+	public void IssueTileMoveOrder(Tile actionTile) {
+		if(tileRange <= 0) return;
 
-		if(!adjTiles.Contains(moveTile)) return;
+		if(!adjTiles.Contains(actionTile)) return;
 
-		movesLeft--;
+		tileRange--;
 
-		SetTile (moveTile);
+		SetTile (actionTile);
 	}
 
 	private IEnumerator MoveToTile(Vector2 targetIndices) {
@@ -154,20 +158,21 @@ public class PathScript : MonoBehaviour
 		Debug.Log ("finished");
 	}
 
+	/// <summary>
+	/// Resets the moves for this pathing.
+	/// </summary>
 	public void ResetMoves() {
-		movesLeft = moveRange;
+		tileRange = moveRange;
 	}
 
-	public void ShowTiles() {
-		foreach(Tile t in rangeTiles) {
-			Transform tileTransform = t.TileObject.transform;
-			Vector3 newPos = tileTransform.position + new Vector3(t.TileSet.WorldDims.x * 0.5f, t.TileSet.WorldDims.y * 0.5f, 0);
-			
-			if(adjTiles.Contains(t))
-				adjTileObjs.Add(Instantiate(adjPrefab, newPos, Quaternion.identity) as GameObject);
-			else
-				rangeTileObjs.Add(Instantiate(rangePrefab, newPos, Quaternion.identity) as GameObject);
-		}
+
+	#endregion
+
+	#region Public Interaction
+
+
+	public void ForceRecomputeTiles(int range) {
+		ComputeTiles(range);
 	}
 
 
@@ -176,20 +181,18 @@ public class PathScript : MonoBehaviour
 	#region Helpers
 
 
-	private void ComputeTiles() {
+	private void ComputeTiles(int range) {
 		rangeTiles.Clear();
 		adjTiles.Clear();
-		ClearShownTiles ();
-
 
 		int i, j, 
 			modTileX, modTileY,
 			gridTilesLenX = GameMap.Instance.mainGrid.Width, gridTilesLenY = GameMap.Instance.mainGrid.Height,
-			jCount = -movesLeft;
+			jCount = -range;
 
 
-		for(i = -movesLeft; i <= movesLeft; i++) {
-			int jCountTemp = movesLeft - Mathf.Abs(jCount);
+		for(i = -range; i <= range; i++) {
+			int jCountTemp = range - Mathf.Abs(jCount);
 
 			for(j = jCountTemp; j >= -jCountTemp; j--) {
 				modTileX = currTileX + i; modTileY = currTileY + j;
@@ -207,14 +210,6 @@ public class PathScript : MonoBehaviour
 			jCount++;
 		}
 	}
-
-	public void ClearShownTiles(){
-		foreach(GameObject g in rangeTileObjs) Destroy (g);
-		foreach(GameObject g in adjTileObjs) Destroy (g);
-
-		rangeTileObjs.Clear();
-		adjTileObjs.Clear();
-		}
 
 
 	#endregion

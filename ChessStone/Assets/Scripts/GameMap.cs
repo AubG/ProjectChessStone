@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 using X_UniTMX;
 
+/// <summary>
+/// Singleton that describes a game map that has all of the main tiles and units on the map.
+/// </summary>
 public class GameMap : Singleton<GameMap>
 {
 	#region Serialized Data
@@ -19,12 +22,26 @@ public class GameMap : Singleton<GameMap>
 	#region Data
 
 
+	/// <summary>
+	/// The main map instance of the game.
+	/// </summary>
 	public Map map { get; private set; }
 
+	/// <summary>
+	/// The main tile grid of the game.
+	/// Can be used to get the 2D array of Tiles for the entire map.
+	/// </summary>
 	public TileGrid mainGrid { get; private set; }
 
+	/// <summary>
+	/// Gets all the units on the map.
+	/// </summary>
+	/// <value>The main units.</value>
 	public List<GameUnit> mainUnits { get; private set; }
 
+	/// <summary>
+	/// Gets all the characters on the map.
+	/// </summary>
 	public List<GameCharacter> mainCharacters { get; private set; }
 
 
@@ -33,6 +50,9 @@ public class GameMap : Singleton<GameMap>
 	#region Initialization
 
 
+	/// <summary>
+	/// Initialize the game map.
+	/// </summary>
 	public void Initialize(Map map) {
 		this.map = map;
 		this.mainGrid = map.GetTileLayer(mainTileLayerName).Tiles;
@@ -41,9 +61,16 @@ public class GameMap : Singleton<GameMap>
 		this.mainCharacters = new List<GameCharacter> ();
 	}
 
+	/// <summary>
+	/// Initializes the objects on the map.
+	/// </summary>
 	public void InitializeObjects() {
 		MapObjectLayer mainObjectLayer = map.GetObjectLayer(mainObjectLayerName);
-		
+
+		// iterate through all the map objects in the game
+		// see if they are units or characters
+		// then add them to the mainUnits or mainCharacters Lists
+		// and initialize them properly into the scene
 		foreach (MapObject o in mainObjectLayer.Objects) {
 			GameUnit temp = (o.go != null) ? o.go.GetComponent<GameUnit>() : null;
 			if(temp) {
