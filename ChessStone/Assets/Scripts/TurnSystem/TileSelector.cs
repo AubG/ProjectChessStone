@@ -23,6 +23,7 @@ public class TileSelector : MonoBehaviour
 	#region Graphics Data
 
 
+<<<<<<< HEAD
 	// Temporary Stuff
 	[SerializeField]
 	private GameObject rangePrefab;
@@ -31,12 +32,15 @@ public class TileSelector : MonoBehaviour
 	private GameObject adjPrefab;
 
 	// GUI Stuff
+=======
+>>>>>>> origin/master
 	[SerializeField]
 	private UILabel unitNameLabel;
 
 	[SerializeField]
 	private UILabel characterLabel;
 
+<<<<<<< HEAD
 	[SerializeField]
 	private GameObject abilitiesParent;
 
@@ -47,36 +51,47 @@ public class TileSelector : MonoBehaviour
 	private List<GameObject> adjTileObjs;
 	private List<GameObject> rangeTileObjs;
 	
+=======
+>>>>>>> origin/master
 
 	#endregion
 
 	#region Game Data
 
 
+<<<<<<< HEAD
 	/// <summary>
 	/// Whether the tile selector is currently active.
 	/// </summary>
 	public bool selectorActive { get; private set; }
 
 	// Temporary storage for selections
+=======
+>>>>>>> origin/master
 	public Tile selectedTile { get; private set; }
 	public GameUnit selectedUnit { get; private set; }
 	public GameCharacter selectedCharacter { get; private set; }
 
 	// Cached selections + their stuffies
 	public GameCharacter actionCharacter { get; private set; }
+<<<<<<< HEAD
 	public GameSpell primedSpell { get; private set; }
+=======
+>>>>>>> origin/master
 
 
 	#endregion
 
 	#region Initialization
 
+<<<<<<< HEAD
 
 	void Start() {
 		rangeTileObjs = new List<GameObject>();
 		adjTileObjs = new List<GameObject>();
 	}
+=======
+>>>>>>> origin/master
 
 	public void StartSelect()
 	{
@@ -127,6 +142,7 @@ public class TileSelector : MonoBehaviour
 	{
 		Debug.Log ("Action phase");
 
+<<<<<<< HEAD
 		ShowTiles();
 
 		Tile target = null;
@@ -148,18 +164,42 @@ public class TileSelector : MonoBehaviour
 		if (primedSpell != null || actionCharacter.pathing.tileRange <= 0) 
 		{
 			ClearShownTiles();
+=======
+		actionCharacter.pathing.ShowTiles();
+		
+		yield return StartCoroutine(WaitForTileSelect());
+		
+		Tile target = selectedTile;
+		if(target.currUnit)
+		{
+		}
+		else
+		{
+			actionCharacter.pathing.IssueTileMoveOrder(target);
+		}
+		
+		if (actionCharacter.pathing.movesLeft <= 0) 
+		{
+>>>>>>> origin/master
 			currState = State.Select;
 		}
 		else 
 		{
+<<<<<<< HEAD
 			Debug.Log ("ffff");
+=======
+>>>>>>> origin/master
 			ResetTileSelection ();
 		}
 		
 		yield return null;
 	}
 
+<<<<<<< HEAD
 	private void UpdateSelection ()
+=======
+	private void UpdatePlayerControls ()
+>>>>>>> origin/master
 	{
 		if(Input.GetButtonDown("Fire1"))
 		{
@@ -176,7 +216,21 @@ public class TileSelector : MonoBehaviour
 
 				if(selectedUnit is GameCharacter)
 				{
+<<<<<<< HEAD
 					selectedCharacter = selectedUnit as GameCharacter;
+=======
+					if(selectedCharacter != null) selectedCharacter.pathing.ClearShownTiles();
+					
+					selectedCharacter = selectedUnit as GameCharacter;
+					if(actionCharacter != null)
+					{
+						actionCharacter.pathing.ClearShownTiles();
+						actionCharacter = selectedCharacter;
+						
+					}
+					
+					selectedCharacter.pathing.ShowTiles();
+>>>>>>> origin/master
 				}
 
 				UpdateLabels(selectedUnit);
@@ -192,13 +246,18 @@ public class TileSelector : MonoBehaviour
 
 	private IEnumerator WaitForTileSelect() {
 		while (selectedTile == null) {
+<<<<<<< HEAD
 			UpdateSelection();
+=======
+			UpdatePlayerControls();
+>>>>>>> origin/master
 			yield return null;
 		}
 	}
 	
 	private IEnumerator WaitForCharacterSelect() {
 		while (selectedCharacter == null) {
+<<<<<<< HEAD
 			UpdateSelection();
 			yield return null;
 		}
@@ -215,6 +274,9 @@ public class TileSelector : MonoBehaviour
 				}
 			}
 
+=======
+			UpdatePlayerControls();
+>>>>>>> origin/master
 			yield return null;
 		}
 	}
@@ -223,7 +285,10 @@ public class TileSelector : MonoBehaviour
 		this.unitNameLabel.text = "[66FA33]" + labelUnit.gameName + "[-]";
 
 		if(labelUnit is GameCharacter) {
+<<<<<<< HEAD
 			// character data
+=======
+>>>>>>> origin/master
 			GameCharacter labelCharacter = labelUnit as GameCharacter;
 
 			string ctext = "";
@@ -232,6 +297,7 @@ public class TileSelector : MonoBehaviour
 				ctext += "Mana: " + labelCharacter.mana.currentValue + " / " + labelCharacter.mana.adjustedMaxValue + "\n";
 
 			characterLabel.text = ctext;
+<<<<<<< HEAD
 
 			// abilities
 			int i, il;
@@ -251,6 +317,8 @@ public class TileSelector : MonoBehaviour
 					activateScript.DefineSpell(spellData.name);
 				}
 			}
+=======
+>>>>>>> origin/master
 		}
 	}
 

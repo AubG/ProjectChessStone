@@ -24,10 +24,16 @@ public class BaseSpell
 		/// </summary>
 		Target
 	}
+<<<<<<< HEAD
 
 	[System.Serializable]
 	public class TargetingData {
 		public bool allowCharacters = false;
+=======
+	
+	public struct TargetingData {
+		public bool canTargetCharacters;
+>>>>>>> origin/master
 	}
 		
 		
@@ -56,11 +62,14 @@ public class BaseSpell
 	/// The type of casting used for the spell.
 	/// </summary>
 	public CastType castType = CastType.Passive;
+<<<<<<< HEAD
 	
 	/// <summary>
 	/// The range of the spell in terms of tiles.
 	/// </summary>
 	public int tileRange;
+=======
+>>>>>>> origin/master
 
 	/// <summary>
 	/// The spell's viable targets data.
@@ -68,6 +77,7 @@ public class BaseSpell
 	public TargetingData targetingData;
 
 	/// <summary>
+<<<<<<< HEAD
 	/// The cooldown time of the spell in terms of turns.
 	/// </summary>
 	public int turnCooldown;
@@ -78,6 +88,8 @@ public class BaseSpell
 	public int turnCastTime;
 
 	/// <summary>
+=======
+>>>>>>> origin/master
 	/// A list of ability effects; what happens when the spell is cast.
 	/// </summary>
 	public List<AbilityEffect> abilityEffects = new List<AbilityEffect>();
@@ -85,11 +97,19 @@ public class BaseSpell
 	/// <summary>
 	/// Atlas used for the item's icon.
 	/// </summary>
+<<<<<<< HEAD
+=======
+	
+>>>>>>> origin/master
 	public UIAtlas iconAtlas;
 	
 	/// <summary>
 	/// Name of the icon's sprite within the atlas.
 	/// </summary>
+<<<<<<< HEAD
+=======
+	
+>>>>>>> origin/master
 	public string iconName = "";
 	
 	

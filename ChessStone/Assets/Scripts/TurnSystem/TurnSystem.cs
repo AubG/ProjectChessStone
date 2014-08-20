@@ -76,6 +76,10 @@ public class TurnSystem : MonoBehaviour {
 		//Immediately start our loop
 
 		BaseSpell spell = SpellDatabase.FindByName("Blood Cleave");
+<<<<<<< HEAD
+=======
+		Debug.Log (spell.abilityEffects.Count);
+>>>>>>> origin/master
 	}
 
 

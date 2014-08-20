@@ -1,7 +1,11 @@
 using UnityEngine;
+<<<<<<< HEAD
 using System.Collections;
 using System.Collections.Generic;
 using X_UniTMX;
+=======
+using System.Collections.Generic;
+>>>>>>> origin/master
 
 [System.Serializable]
 public class GameSpell
@@ -53,10 +57,14 @@ public class GameSpell
 	#region Game Data
 
 
+<<<<<<< HEAD
 	private GameCharacter caster = null;
 	private Tile targetTile = null;
 
 	private int startTurnTime = 0;
+=======
+
+>>>>>>> origin/master
 
 
 	#endregion
@@ -80,6 +88,7 @@ public class GameSpell
 	#region Public Interaction
 
 
+<<<<<<< HEAD
 	public void Cast(GameCharacter self, Tile target = null) {
 		caster = self;
 		targetTile = target;
@@ -107,6 +116,13 @@ public class GameSpell
 		}
 
 		OnCastEffect();
+=======
+	public void OnCastEffect(GameUnit target) {
+		for(int i = 0, il = baseSpell.abilityEffects.Count; i < il; i++) {
+			AbilityEffect effect = baseSpell.abilityEffects[i];
+			effect.OnCastEffect(target);
+		}
+>>>>>>> origin/master
 	}
 
 

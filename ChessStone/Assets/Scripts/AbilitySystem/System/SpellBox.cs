@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+<<<<<<< HEAD
 using X_UniTMX;
+=======
+>>>>>>> origin/master
 
 /// <summary>
 /// Inventory system -- Equipment class works with InvAttachmentPoints and allows to visually equip and remove items.
@@ -9,6 +12,7 @@ using X_UniTMX;
 [AddComponentMenu("Spells/Box")]
 public class SpellBox : MonoBehaviour
 {
+<<<<<<< HEAD
 	#region Data
 
 
@@ -42,6 +46,14 @@ public class SpellBox : MonoBehaviour
 	#region Public Interaction
 
 
+=======
+	[SerializeField]
+	private GameSpell[] mSpells;
+
+	/// <summary>
+	/// Whether the box contains the spell.
+	/// </summary>
+>>>>>>> origin/master
 	public GameSpell GetSpell (string name)
 	{
 		if (mSpells != null)
@@ -53,6 +65,7 @@ public class SpellBox : MonoBehaviour
 		}
 		return null;
 	}
+<<<<<<< HEAD
 
 	public void CastSpell(string name, Tile target = null) {
 		GameSpell theSpell = GetSpell(name);
@@ -61,4 +74,6 @@ public class SpellBox : MonoBehaviour
 
 
 	#endregion
+=======
+>>>>>>> origin/master
 }
