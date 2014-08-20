@@ -10,6 +10,7 @@ using System.Collections.Generic;
 public class CardInvDatabaseInspector : Editor
 {
 	static int mIndex = 0;
+	AbilityEffect.Identifier mSetIden = AbilityEffect.Identifier.None;
 
 	bool mConfirmDelete = false;
 
@@ -398,6 +399,79 @@ public class CardInvDatabaseInspector : Editor
 					item.manaCost = mana_cost;
 					//item.maxItemLevel = max;
 				}
+				NGUIEditorTools.DrawSeparator();
+				
+				EditorGUILayout.LabelField("Effects", EditorStyles.boldLabel);
+				
+				if (item.abilityEffects != null)
+				{
+					for (int i = 0; i < item.abilityEffects.Count; ++i)
+					{
+						AbilityEffect effect = item.abilityEffects[i];
+						
+						GUILayout.BeginHorizontal();
+						{
+							EditorGUILayout.LabelField("Effect: " + effect.id, EditorStyles.whiteLargeLabel);
+							
+							GUI.backgroundColor = Color.red;
+							if (GUILayout.Button("X", GUILayout.Width(20f)))
+							{
+								NGUIEditorTools.RegisterUndo("Delete Ability Effect", db);
+								item.abilityEffects.RemoveAt(i);
+								--i;
+								continue;
+							}
+							GUI.backgroundColor = Color.white;
+						}
+						GUILayout.EndHorizontal();
+						
+						switch(effect.id) {
+						case AbilityEffect.Identifier.DamageTarget:
+							DamageTarget damageTarget = effect as DamageTarget;
+							float dt_amount = EditorGUILayout.FloatField("Amount", damageTarget.amount, GUILayout.Width(120f));
+							if(dt_amount != damageTarget.amount) {
+								NGUIEditorTools.RegisterUndo("Ability Effects", db);
+								((DamageTarget)effect).amount = dt_amount;
+							}
+							break;
+						case AbilityEffect.Identifier.DamageSelf:
+							DamageSelf damageSelf = effect as DamageSelf;
+							float ds_amount = EditorGUILayout.FloatField("Amount", damageSelf.amount, GUILayout.Width(120f));
+							if(ds_amount != damageSelf.amount) {
+								NGUIEditorTools.RegisterUndo("Ability Effects", db);
+								((DamageSelf)effect).amount = ds_amount;
+							}
+							break;
+						}
+					}
+					
+					GUILayout.BeginHorizontal();
+					{
+						mSetIden = (AbilityEffect.Identifier)EditorGUILayout.EnumPopup(mSetIden, GUILayout.Width(240f));
+						
+						if (GUILayout.Button("Add Effect", GUILayout.Width(80f)) && mSetIden != AbilityEffect.Identifier.None)
+						{
+							NGUIEditorTools.RegisterUndo("Add Effect", db);
+							
+							AbilityEffect effect = null;
+							
+							switch(mSetIden) {
+							case AbilityEffect.Identifier.DamageTarget:
+								effect = new DamageTarget();
+								break;
+							case AbilityEffect.Identifier.DamageSelf:
+								effect = new DamageSelf();
+								break;
+							}
+							
+							item.abilityEffects.Add(effect);
+							effect.id = mSetIden;
+						}
+					}
+					GUILayout.EndHorizontal();
+				}
+				
+				NGUIEditorTools.DrawSeparator();
 			}
 		}
 	}

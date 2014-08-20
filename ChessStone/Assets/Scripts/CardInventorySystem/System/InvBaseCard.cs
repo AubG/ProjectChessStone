@@ -91,4 +91,6 @@ public class InvBaseCard
 	/// </summary>
 
 	public string iconName = "";
+
+	public List<AbilityEffect> abilityEffects;
 }
