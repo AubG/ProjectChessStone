@@ -11,6 +11,8 @@ public class PathScript : MonoBehaviour
 {
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
 	#region Graphics Data
 
 
@@ -23,6 +25,7 @@ public class PathScript : MonoBehaviour
 
 	#endregion
 >>>>>>> origin/master
+>>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	
 	#region Unit Data
 	
@@ -55,10 +58,13 @@ public class PathScript : MonoBehaviour
 
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
 	private List<GameObject> adjTileObjs;
 	private List<GameObject> rangeTileObjs;
 
 >>>>>>> origin/master
+>>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 
 	#endregion
 
@@ -72,12 +78,15 @@ public class PathScript : MonoBehaviour
 
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
 	/// <summary>
 	/// Gets the moves left for this path.
 	/// </summary>
 	public int movesLeft { get; private set; }
 
 >>>>>>> origin/master
+>>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 
 	#endregion
 
@@ -166,9 +175,14 @@ public class PathScript : MonoBehaviour
 	public void IssueTileMoveOrder(Tile actionTile) {
 		if(tileRange <= 0) return;
 =======
+<<<<<<< HEAD
+	public void IssueTileMoveOrder(Tile actionTile) {
+		if(tileRange <= 0) return;
+=======
 	public void IssueTileMoveOrder(Tile moveTile) {
 		if(movesLeft <= 0) return;
 >>>>>>> origin/master
+>>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 
 		if(!adjTiles.Contains(actionTile)) return;
 
@@ -196,6 +210,19 @@ public class PathScript : MonoBehaviour
 	/// </summary>
 	public void ResetMoves() {
 		tileRange = moveRange;
+<<<<<<< HEAD
+	}
+
+
+	#endregion
+
+	#region Public Interaction
+
+
+	public void ForceRecomputeTiles(int range) {
+		ComputeTiles(range);
+=======
+>>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	}
 
 <<<<<<< HEAD
@@ -205,6 +232,8 @@ public class PathScript : MonoBehaviour
 	#region Public Interaction
 
 
+<<<<<<< HEAD
+=======
 	public void ForceRecomputeTiles(int range) {
 		ComputeTiles(range);
 =======
@@ -247,6 +276,7 @@ public class PathScript : MonoBehaviour
 	#region Helpers
 
 
+>>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	private void ComputeTiles(int range) {
 		rangeTiles.Clear();
 		adjTiles.Clear();

@@ -25,15 +25,21 @@ public class BaseSpell
 		Target
 	}
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 
 	[System.Serializable]
 	public class TargetingData {
 		public bool allowCharacters = false;
+<<<<<<< HEAD
+=======
 =======
 	
 	public struct TargetingData {
 		public bool canTargetCharacters;
 >>>>>>> origin/master
+>>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	}
 		
 		
@@ -63,13 +69,19 @@ public class BaseSpell
 	/// </summary>
 	public CastType castType = CastType.Passive;
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	
 	/// <summary>
 	/// The range of the spell in terms of tiles.
 	/// </summary>
 	public int tileRange;
+<<<<<<< HEAD
+=======
 =======
 >>>>>>> origin/master
+>>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 
 	/// <summary>
 	/// The spell's viable targets data.
@@ -78,6 +90,9 @@ public class BaseSpell
 
 	/// <summary>
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	/// The cooldown time of the spell in terms of turns.
 	/// </summary>
 	public int turnCooldown;
@@ -88,8 +103,11 @@ public class BaseSpell
 	public int turnCastTime;
 
 	/// <summary>
+<<<<<<< HEAD
+=======
 =======
 >>>>>>> origin/master
+>>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	/// A list of ability effects; what happens when the spell is cast.
 	/// </summary>
 	public List<AbilityEffect> abilityEffects = new List<AbilityEffect>();
@@ -99,8 +117,11 @@ public class BaseSpell
 	/// </summary>
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
 	
 >>>>>>> origin/master
+>>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	public UIAtlas iconAtlas;
 	
 	/// <summary>
@@ -108,8 +129,11 @@ public class BaseSpell
 	/// </summary>
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
 	
 >>>>>>> origin/master
+>>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	public string iconName = "";
 	
 	
