@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using X_UniTMX;
 
 /// <summary>
-/// Damages the caster for the amount.
+/// Damages the caster every turn for the specified amount.
 /// </summary>
 [System.Serializable]
-public class DamageSelf : AbilityEffect
+public class PeriodicDamage : AbilityEffect
 {
 	/// <summary>
 	/// The amount of damage.

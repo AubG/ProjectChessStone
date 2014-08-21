@@ -27,7 +27,7 @@ public class BaseSpell
 
 	[System.Serializable]
 	public class TargetingData {
-		public bool canTargetCharacters = false;
+		public bool allowCharacters = false;
 	}
 		
 		
@@ -68,6 +68,16 @@ public class BaseSpell
 	public TargetingData targetingData;
 
 	/// <summary>
+	/// The cooldown time of the spell in terms of turns.
+	/// </summary>
+	public int turnCooldown;
+
+	/// <summary>
+	/// The cast time of the spell in terms of turns.
+	/// </summary>
+	public int turnCastTime;
+
+	/// <summary>
 	/// A list of ability effects; what happens when the spell is cast.
 	/// </summary>
 	public List<AbilityEffect> abilityEffects = new List<AbilityEffect>();
@@ -75,13 +85,11 @@ public class BaseSpell
 	/// <summary>
 	/// Atlas used for the item's icon.
 	/// </summary>
-	
 	public UIAtlas iconAtlas;
 	
 	/// <summary>
 	/// Name of the icon's sprite within the atlas.
 	/// </summary>
-	
 	public string iconName = "";
 	
 	

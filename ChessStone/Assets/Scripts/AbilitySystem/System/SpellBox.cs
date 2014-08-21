@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using X_UniTMX;
 
 /// <summary>
 /// Inventory system -- Equipment class works with InvAttachmentPoints and allows to visually equip and remove items.
@@ -20,6 +21,24 @@ public class SpellBox : MonoBehaviour
 
 	#endregion
 
+	#region Game Data
+
+
+	private GameCharacter caster;
+
+
+	#endregion
+
+	#region Init
+
+
+	void Start() {
+		if(!caster) caster = this.GetComponent<GameCharacter>();
+	}
+
+
+	#endregion
+
 	#region Public Interaction
 
 
@@ -33,6 +52,11 @@ public class SpellBox : MonoBehaviour
 			}
 		}
 		return null;
+	}
+
+	public void CastSpell(string name, Tile target = null) {
+		GameSpell theSpell = GetSpell(name);
+		if(theSpell != null) theSpell.Cast(caster, target);
 	}
 
 

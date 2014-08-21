@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using X_UniTMX;
 
 public class TileSelector : MonoBehaviour
@@ -22,6 +23,14 @@ public class TileSelector : MonoBehaviour
 	#region Graphics Data
 
 
+	// Temporary Stuff
+	[SerializeField]
+	private GameObject rangePrefab;
+	
+	[SerializeField]
+	private GameObject adjPrefab;
+
+	// GUI Stuff
 	[SerializeField]
 	private UILabel unitNameLabel;
 
@@ -34,17 +43,29 @@ public class TileSelector : MonoBehaviour
 	[SerializeField]
 	private GameObject abilitiesButtonPrefab;
 
+	// Continuation of Temporary stuff
+	private List<GameObject> adjTileObjs;
+	private List<GameObject> rangeTileObjs;
+	
 
 	#endregion
 
 	#region Game Data
 
 
+	/// <summary>
+	/// Whether the tile selector is currently active.
+	/// </summary>
+	public bool selectorActive { get; private set; }
+
+	// Temporary storage for selections
 	public Tile selectedTile { get; private set; }
 	public GameUnit selectedUnit { get; private set; }
 	public GameCharacter selectedCharacter { get; private set; }
 
+	// Cached selections + their stuffies
 	public GameCharacter actionCharacter { get; private set; }
+	public GameSpell primedSpell { get; private set; }
 
 
 	#endregion
@@ -52,10 +73,16 @@ public class TileSelector : MonoBehaviour
 	#region Initialization
 
 
+	void Start() {
+		rangeTileObjs = new List<GameObject>();
+		adjTileObjs = new List<GameObject>();
+	}
+
 	public void StartSelect()
 	{
 		ResetTileSelection();
 		currState = State.Select;
+		selectorActive = true;
 		StartCoroutine(UpdateState());
 	}
 
@@ -85,10 +112,10 @@ public class TileSelector : MonoBehaviour
 	{
 		Debug.Log ("Select phase");
 		
-		yield return StartCoroutine(WaitForCharacterSelect());
+		yield return StartCoroutine(WaitForSelect());
 		
 		actionCharacter = selectedCharacter;
-
+		
 		ResetTileSelection();
 		
 		currState = State.Action;
@@ -100,32 +127,35 @@ public class TileSelector : MonoBehaviour
 	{
 		Debug.Log ("Action phase");
 
-		actionCharacter.pathing.ShowTiles();
-		
-		yield return StartCoroutine(WaitForTileSelect());
-		
-		Tile target = selectedTile;
-		if(target.currUnit)
+		ShowTiles();
+
+		yield return StartCoroutine(WaitForSelect());
+		if(primedSpell != null)
 		{
+			primedSpell.Cast(actionCharacter, selectedTile);
 		}
 		else
 		{
-			actionCharacter.pathing.IssueTileMoveOrder(target);
+			actionCharacter.pathing.IssueTileMoveOrder(selectedTile);
 		}
+
+		ResetTileSelection();
 		
-		if (actionCharacter.pathing.movesLeft <= 0) 
+		if (primedSpell != null || actionCharacter.pathing.tileRange <= 0) 
 		{
 			currState = State.Select;
+
+			actionCharacter = null;
+			primedSpell = null;
 		}
 		else 
 		{
-			ResetTileSelection ();
 		}
 		
 		yield return null;
 	}
 
-	private void UpdatePlayerControls ()
+	private void UpdateSelection ()
 	{
 		if(Input.GetButtonDown("Fire1"))
 		{
@@ -142,20 +172,10 @@ public class TileSelector : MonoBehaviour
 
 				if(selectedUnit is GameCharacter)
 				{
-					if(selectedCharacter != null) selectedCharacter.pathing.ClearShownTiles();
-					
 					selectedCharacter = selectedUnit as GameCharacter;
-					if(actionCharacter != null)
-					{
-						actionCharacter.pathing.ClearShownTiles();
-						actionCharacter = selectedCharacter;
-						
-					}
-					
-					selectedCharacter.pathing.ShowTiles();
 				}
 
-				UpdateLabels(selectedUnit);
+				if(primedSpell == null) UpdateLabels(selectedUnit);
 			}
 		}
 	}
@@ -164,18 +184,37 @@ public class TileSelector : MonoBehaviour
 	#endregion
 
 	#region Helpers
-
-
-	private IEnumerator WaitForTileSelect() {
-		while (selectedTile == null) {
-			UpdatePlayerControls();
-			yield return null;
-		}
-	}
 	
-	private IEnumerator WaitForCharacterSelect() {
-		while (selectedCharacter == null) {
-			UpdatePlayerControls();
+
+	private IEnumerator WaitForSelect() {
+		bool selectionComplete = false;
+
+		while(true) {
+			if(selectedTile == null) UpdateSelection();
+
+			if(selectedTile != null) {
+				switch(currState) {
+					case State.Select:
+						// if the selector state is in Select mode then we must select a viable character
+						if(selectedCharacter != null) selectionComplete = true;
+						break;
+					case State.Action:
+						// if a spell has been primd then we need to make sure its a viable target for the spell
+						if(primedSpell != null) {
+							BaseSpell.TargetingData targeting = primedSpell.baseSpell.targetingData;
+							if((targeting.allowCharacters) && selectedTile.currUnit != null) {
+								if(targeting.allowCharacters && selectedTile.currUnit is GameCharacter) selectionComplete = true;
+							}
+						} else {
+						// otherwise just ensure that a viable tile has been selected to move to
+							if(selectedTile != null) selectionComplete = true;
+						}
+						break;
+				}
+
+				if(selectionComplete) break;
+			}
+
 			yield return null;
 		}
 	}
@@ -198,7 +237,8 @@ public class TileSelector : MonoBehaviour
 			int i, il;
 			for(i = 0, il = abilitiesParent.transform.childCount; i < il; i++) Destroy (abilitiesParent.transform.GetChild(i).gameObject);
 			for(i = 0, il = labelCharacter.spellBox.spells.Length; i < il; i++) {
-				BaseSpell spellData = labelCharacter.spellBox.spells[i].baseSpell;
+				GameSpell spell = labelCharacter.spellBox.spells[i];
+				BaseSpell spellData = spell.baseSpell;
 				GameObject spellButton = NGUITools.AddChild(abilitiesParent, abilitiesButtonPrefab);
 				UILabel spellLabel = spellButton.GetComponentInChildren<UILabel>();
 				if(spellLabel == null) {
@@ -206,6 +246,9 @@ public class TileSelector : MonoBehaviour
 					return;
 				} else {
 					spellLabel.text = spellData.name;
+					ActivateSpellOnClick activateScript = spellButton.GetComponent<ActivateSpellOnClick>();
+					activateScript.currSelector = this;
+					activateScript.DefineSpell(spellData.name);
 				}
 			}
 		}
@@ -221,6 +264,47 @@ public class TileSelector : MonoBehaviour
 		selectedTile = null;
 		selectedUnit = null;
 		selectedCharacter = null;
+
+		ClearShownTiles();
+	}
+
+	/// <summary>
+	/// Assumes the actionCharacter has already been defined.
+	/// </summary>
+	public void PrimeSpell(string spellName) {
+		GameSpell spell = actionCharacter.spellBox.GetSpell(spellName);
+		primedSpell = spell;
+		actionCharacter.pathing.ForceRecomputeTiles(primedSpell.baseSpell.tileRange);
+		ShowTiles();
+	}
+
+	/// <summary>
+	/// Assumes the actionCharacter has been initialized.
+	/// Shows the tiles in range and adjacent tiles.
+	/// </summary>
+	public void ShowTiles() {
+		ClearShownTiles();
+
+		foreach(Tile t in actionCharacter.pathing.rangeTiles) {
+			Transform tileTransform = t.TileObject.transform;
+			Vector3 newPos = tileTransform.position + new Vector3(t.TileSet.WorldDims.x * 0.5f, t.TileSet.WorldDims.y * 0.5f, 0);
+				
+			if(actionCharacter.pathing.adjTiles.Contains(t))
+				adjTileObjs.Add(Instantiate(adjPrefab, newPos, Quaternion.identity) as GameObject);
+			else
+				rangeTileObjs.Add(Instantiate(rangePrefab, newPos, Quaternion.identity) as GameObject);
+		}
+	}
+
+	/// <summary>
+	/// Clears the shown in-range and adjacent tiles.
+	/// </summary>
+	public void ClearShownTiles() {
+		foreach(GameObject g in rangeTileObjs) Destroy (g);
+		foreach(GameObject g in adjTileObjs) Destroy (g);
+		
+		rangeTileObjs.Clear();
+		adjTileObjs.Clear();
 	}
 	
 	

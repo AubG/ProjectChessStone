@@ -311,7 +311,7 @@ public class SpellDatabaseInspector : Editor
 
 				// Spell Targeting Data
 				EditorGUILayout.LabelField("Allowed Targets", EditorStyles.boldLabel);
-				bool characterTargetsAllowed = EditorGUILayout.Toggle("Characters", spell.targetingData.canTargetCharacters);
+				bool allowCharacters = EditorGUILayout.Toggle("Characters", spell.targetingData.allowCharacters);
 				
 				GUILayout.Space(iconSize);
 				
@@ -319,13 +319,13 @@ public class SpellDatabaseInspector : Editor
 				if (!spellDesc.Equals(spell.description) ||
 					!iconName.Equals(spell.iconName) ||
 				   	range != spell.tileRange ||
-				    characterTargetsAllowed != spell.targetingData.canTargetCharacters)
+				    allowCharacters != spell.targetingData.allowCharacters)
 				{
 					NGUIEditorTools.RegisterUndo("Spell Properties", db);
 					spell.description = spellDesc;
 					spell.iconName = iconName;
 					spell.tileRange = range;
-					spell.targetingData.canTargetCharacters = characterTargetsAllowed;
+					spell.targetingData.allowCharacters = allowCharacters;
 				}
 				
 				NGUIEditorTools.DrawSeparator();
