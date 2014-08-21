@@ -305,10 +305,6 @@ public class SpellDatabaseInspector : Editor
 						}
 					}
 				}
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 
 				// Spell Tile Range
 				int range = EditorGUILayout.IntField("Tile Range", spell.tileRange, GUILayout.Width(120f));
@@ -316,43 +312,20 @@ public class SpellDatabaseInspector : Editor
 				// Spell Targeting Data
 				EditorGUILayout.LabelField("Allowed Targets", EditorStyles.boldLabel);
 				bool allowCharacters = EditorGUILayout.Toggle("Characters", spell.targetingData.allowCharacters);
-<<<<<<< HEAD
-=======
-=======
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 				
 				GUILayout.Space(iconSize);
 				
 				// Save all values
 				if (!spellDesc.Equals(spell.description) ||
-<<<<<<< HEAD
 					!iconName.Equals(spell.iconName) ||
 				   	range != spell.tileRange ||
 				    allowCharacters != spell.targetingData.allowCharacters)
-=======
-<<<<<<< HEAD
-					!iconName.Equals(spell.iconName) ||
-				   	range != spell.tileRange ||
-				    allowCharacters != spell.targetingData.allowCharacters)
-=======
-					!iconName.Equals(spell.iconName))
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 				{
 					NGUIEditorTools.RegisterUndo("Spell Properties", db);
 					spell.description = spellDesc;
 					spell.iconName = iconName;
-<<<<<<< HEAD
 					spell.tileRange = range;
 					spell.targetingData.allowCharacters = allowCharacters;
-=======
-<<<<<<< HEAD
-					spell.tileRange = range;
-					spell.targetingData.allowCharacters = allowCharacters;
-=======
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 				}
 				
 				NGUIEditorTools.DrawSeparator();
@@ -398,22 +371,6 @@ public class SpellDatabaseInspector : Editor
 						}
 					}
 					GUILayout.EndHorizontal();
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-					
-					switch(type) {
-						case BaseSpell.CastType.Passive:
-							break;
-						case BaseSpell.CastType.Instant:
-							break;
-						case BaseSpell.CastType.Target:
-							break;
-					}
-
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 				}
 				
 				NGUIEditorTools.DrawSeparator();
@@ -445,10 +402,6 @@ public class SpellDatabaseInspector : Editor
 						switch(effect.id) {
 							case AbilityEffect.Identifier.DamageTarget:
 								DamageTarget damageTarget = effect as DamageTarget;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 								float dt_amount = EditorGUILayout.FloatField("Amount", damageTarget.amount, GUILayout.Width(120f));
 								if(dt_amount != damageTarget.amount) {
 									NGUIEditorTools.RegisterUndo("Ability Effects", db);
@@ -461,15 +414,6 @@ public class SpellDatabaseInspector : Editor
 								if(ds_amount != damageSelf.amount) {
 									NGUIEditorTools.RegisterUndo("Ability Effects", db);
 									((DamageSelf)effect).amount = ds_amount;
-<<<<<<< HEAD
-=======
-=======
-								float amount = EditorGUILayout.FloatField("Amount", damageTarget.amount, GUILayout.Width(120f));
-								if(amount != damageTarget.amount) {
-									NGUIEditorTools.RegisterUndo("Ability Effects", db);
-									((DamageTarget)effect).amount = amount;
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 								}
 								break;
 						}
@@ -488,10 +432,6 @@ public class SpellDatabaseInspector : Editor
 							switch(mSetIden) {
 								case AbilityEffect.Identifier.DamageTarget:
 									effect = new DamageTarget();
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 									break;
 								case AbilityEffect.Identifier.DamageSelf:
 									effect = new DamageSelf();
@@ -499,15 +439,6 @@ public class SpellDatabaseInspector : Editor
 							}
 
 							spell.abilityEffects.Add(effect);
-<<<<<<< HEAD
-=======
-=======
-									spell.abilityEffects.Add(effect);
-									break;
-							}
-							
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 							effect.id = mSetIden;
 						}
 					}

@@ -9,23 +9,6 @@ using X_UniTMX;
 /// </summary>
 public class PathScript : MonoBehaviour
 {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-	#region Graphics Data
-
-
-	[SerializeField]
-	private GameObject rangePrefab;
-
-	[SerializeField]
-	private GameObject adjPrefab;
-
-
-	#endregion
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	
 	#region Unit Data
 	
@@ -56,15 +39,6 @@ public class PathScript : MonoBehaviour
 	/// </summary>
 	public List<Tile> rangeTiles { get; private set; }
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-	private List<GameObject> adjTileObjs;
-	private List<GameObject> rangeTileObjs;
-
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 
 	#endregion
 
@@ -76,17 +50,6 @@ public class PathScript : MonoBehaviour
 	[SerializeField]
 	private int moveRange;
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-	/// <summary>
-	/// Gets the moves left for this path.
-	/// </summary>
-	public int movesLeft { get; private set; }
-
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 
 	#endregion
 
@@ -171,18 +134,8 @@ public class PathScript : MonoBehaviour
 	/// <summary>
 	/// Issues a move order to that moves to the specified tile.
 	/// </summary>
-<<<<<<< HEAD
 	public void IssueTileMoveOrder(Tile actionTile) {
 		if(tileRange <= 0) return;
-=======
-<<<<<<< HEAD
-	public void IssueTileMoveOrder(Tile actionTile) {
-		if(tileRange <= 0) return;
-=======
-	public void IssueTileMoveOrder(Tile moveTile) {
-		if(movesLeft <= 0) return;
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 
 		if(!adjTiles.Contains(actionTile)) return;
 
@@ -210,7 +163,6 @@ public class PathScript : MonoBehaviour
 	/// </summary>
 	public void ResetMoves() {
 		tileRange = moveRange;
-<<<<<<< HEAD
 	}
 
 
@@ -221,53 +173,6 @@ public class PathScript : MonoBehaviour
 
 	public void ForceRecomputeTiles(int range) {
 		ComputeTiles(range);
-=======
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
-	}
-
-<<<<<<< HEAD
-
-	#endregion
-
-	#region Public Interaction
-
-
-<<<<<<< HEAD
-=======
-	public void ForceRecomputeTiles(int range) {
-		ComputeTiles(range);
-=======
-	/// <summary>
-	/// Shows the tiles in range and adjacent tiles.
-	/// </summary>
-	public void ShowTiles() {
-		foreach(Tile t in rangeTiles) {
-			Transform tileTransform = t.TileObject.transform;
-			Vector3 newPos = tileTransform.position + new Vector3(t.TileSet.WorldDims.x * 0.5f, t.TileSet.WorldDims.y * 0.5f, 0);
-			
-			if(adjTiles.Contains(t))
-				adjTileObjs.Add(Instantiate(adjPrefab, newPos, Quaternion.identity) as GameObject);
-			else
-				rangeTileObjs.Add(Instantiate(rangePrefab, newPos, Quaternion.identity) as GameObject);
-		}
->>>>>>> origin/master
-	}
-
-
-	#endregion
-
-	#region Public Interaction
-
-
-	/// <summary>
-	/// Clears the shown in-range and adjacent tiles.
-	/// </summary>
-	public void ClearShownTiles() {
-		foreach(GameObject g in rangeTileObjs) Destroy (g);
-		foreach(GameObject g in adjTileObjs) Destroy (g);
-		
-		rangeTileObjs.Clear();
-		adjTileObjs.Clear();
 	}
 
 
@@ -276,7 +181,6 @@ public class PathScript : MonoBehaviour
 	#region Helpers
 
 
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	private void ComputeTiles(int range) {
 		rangeTiles.Clear();
 		adjTiles.Clear();

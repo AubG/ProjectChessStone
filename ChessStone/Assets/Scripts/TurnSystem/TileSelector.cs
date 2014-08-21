@@ -23,10 +23,6 @@ public class TileSelector : MonoBehaviour
 	#region Graphics Data
 
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	// Temporary Stuff
 	[SerializeField]
 	private GameObject rangePrefab;
@@ -35,21 +31,12 @@ public class TileSelector : MonoBehaviour
 	private GameObject adjPrefab;
 
 	// GUI Stuff
-<<<<<<< HEAD
-=======
-=======
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	[SerializeField]
 	private UILabel unitNameLabel;
 
 	[SerializeField]
 	private UILabel characterLabel;
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	[SerializeField]
 	private GameObject abilitiesParent;
 
@@ -60,66 +47,36 @@ public class TileSelector : MonoBehaviour
 	private List<GameObject> adjTileObjs;
 	private List<GameObject> rangeTileObjs;
 	
-<<<<<<< HEAD
-=======
-=======
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 
 	#endregion
 
 	#region Game Data
 
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	/// <summary>
 	/// Whether the tile selector is currently active.
 	/// </summary>
 	public bool selectorActive { get; private set; }
 
 	// Temporary storage for selections
-<<<<<<< HEAD
-=======
-=======
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	public Tile selectedTile { get; private set; }
 	public GameUnit selectedUnit { get; private set; }
 	public GameCharacter selectedCharacter { get; private set; }
 
 	// Cached selections + their stuffies
 	public GameCharacter actionCharacter { get; private set; }
-<<<<<<< HEAD
 	public GameSpell primedSpell { get; private set; }
-=======
-<<<<<<< HEAD
-	public GameSpell primedSpell { get; private set; }
-=======
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 
 
 	#endregion
 
 	#region Initialization
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 
 	void Start() {
 		rangeTileObjs = new List<GameObject>();
 		adjTileObjs = new List<GameObject>();
 	}
-<<<<<<< HEAD
-=======
-=======
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 
 	public void StartSelect()
 	{
@@ -155,11 +112,7 @@ public class TileSelector : MonoBehaviour
 	{
 		Debug.Log ("Select phase");
 		
-<<<<<<< HEAD
 		yield return StartCoroutine(WaitForSelect());
-=======
-		yield return StartCoroutine(WaitForCharacterSelect());
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 		
 		actionCharacter = selectedCharacter;
 		
@@ -174,7 +127,6 @@ public class TileSelector : MonoBehaviour
 	{
 		Debug.Log ("Action phase");
 
-<<<<<<< HEAD
 		ShowTiles();
 
 		yield return StartCoroutine(WaitForSelect());
@@ -198,70 +150,12 @@ public class TileSelector : MonoBehaviour
 		}
 		else 
 		{
-=======
-<<<<<<< HEAD
-		ShowTiles();
-
-		Tile target = null;
-		Debug.Log (primedSpell);
-		if(primedSpell != null)
-		{
-			yield return StartCoroutine(WaitForViableSpellTargetSelect());
-			Debug.Log (target.currUnit);
-			target = selectedTile;
-			primedSpell.Cast(actionCharacter, target);
-		}
-		else
-		{
-			yield return StartCoroutine(WaitForTileSelect());
-			target = selectedTile;
-				actionCharacter.pathing.IssueTileMoveOrder(target);
-		}
-		
-		if (primedSpell != null || actionCharacter.pathing.tileRange <= 0) 
-		{
-			ClearShownTiles();
-=======
-		actionCharacter.pathing.ShowTiles();
-		
-		yield return StartCoroutine(WaitForTileSelect());
-		
-		Tile target = selectedTile;
-		if(target.currUnit)
-		{
-		}
-		else
-		{
-			actionCharacter.pathing.IssueTileMoveOrder(target);
-		}
-		
-		if (actionCharacter.pathing.movesLeft <= 0) 
-		{
->>>>>>> origin/master
-			currState = State.Select;
-		}
-		else 
-		{
-<<<<<<< HEAD
-			Debug.Log ("ffff");
-=======
->>>>>>> origin/master
-			ResetTileSelection ();
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 		}
 		
 		yield return null;
 	}
 
-<<<<<<< HEAD
 	private void UpdateSelection ()
-=======
-<<<<<<< HEAD
-	private void UpdateSelection ()
-=======
-	private void UpdatePlayerControls ()
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	{
 		if(Input.GetButtonDown("Fire1"))
 		{
@@ -278,31 +172,10 @@ public class TileSelector : MonoBehaviour
 
 				if(selectedUnit is GameCharacter)
 				{
-<<<<<<< HEAD
 					selectedCharacter = selectedUnit as GameCharacter;
 				}
 
 				if(primedSpell == null) UpdateLabels(selectedUnit);
-=======
-<<<<<<< HEAD
-					selectedCharacter = selectedUnit as GameCharacter;
-=======
-					if(selectedCharacter != null) selectedCharacter.pathing.ClearShownTiles();
-					
-					selectedCharacter = selectedUnit as GameCharacter;
-					if(actionCharacter != null)
-					{
-						actionCharacter.pathing.ClearShownTiles();
-						actionCharacter = selectedCharacter;
-						
-					}
-					
-					selectedCharacter.pathing.ShowTiles();
->>>>>>> origin/master
-				}
-
-				UpdateLabels(selectedUnit);
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 			}
 		}
 	}
@@ -311,7 +184,6 @@ public class TileSelector : MonoBehaviour
 	#endregion
 
 	#region Helpers
-<<<<<<< HEAD
 	
 
 	private IEnumerator WaitForSelect() {
@@ -343,43 +215,6 @@ public class TileSelector : MonoBehaviour
 				if(selectionComplete) break;
 			}
 
-=======
-
-
-	private IEnumerator WaitForTileSelect() {
-		while (selectedTile == null) {
-<<<<<<< HEAD
-			UpdateSelection();
-=======
-			UpdatePlayerControls();
->>>>>>> origin/master
-			yield return null;
-		}
-	}
-	
-	private IEnumerator WaitForCharacterSelect() {
-		while (selectedCharacter == null) {
-<<<<<<< HEAD
-			UpdateSelection();
-			yield return null;
-		}
-	}
-
-	private IEnumerator WaitForViableSpellTargetSelect() {
-		while(true) {
-			UpdateSelection();
-
-			if(selectedTile != null) {
-				BaseSpell.TargetingData targeting = primedSpell.baseSpell.targetingData;
-				if((targeting.allowCharacters) && selectedTile.currUnit != null) {
-					if(targeting.allowCharacters && selectedTile.currUnit is GameCharacter) break;
-				}
-			}
-
-=======
-			UpdatePlayerControls();
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 			yield return null;
 		}
 	}
@@ -388,14 +223,7 @@ public class TileSelector : MonoBehaviour
 		this.unitNameLabel.text = "[66FA33]" + labelUnit.gameName + "[-]";
 
 		if(labelUnit is GameCharacter) {
-<<<<<<< HEAD
 			// character data
-=======
-<<<<<<< HEAD
-			// character data
-=======
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 			GameCharacter labelCharacter = labelUnit as GameCharacter;
 
 			string ctext = "";
@@ -404,10 +232,6 @@ public class TileSelector : MonoBehaviour
 				ctext += "Mana: " + labelCharacter.mana.currentValue + " / " + labelCharacter.mana.adjustedMaxValue + "\n";
 
 			characterLabel.text = ctext;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 
 			// abilities
 			int i, il;
@@ -427,11 +251,6 @@ public class TileSelector : MonoBehaviour
 					activateScript.DefineSpell(spellData.name);
 				}
 			}
-<<<<<<< HEAD
-=======
-=======
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 		}
 	}
 
@@ -457,10 +276,6 @@ public class TileSelector : MonoBehaviour
 		primedSpell = spell;
 		actionCharacter.pathing.ForceRecomputeTiles(primedSpell.baseSpell.tileRange);
 		ShowTiles();
-<<<<<<< HEAD
-=======
-		Debug.Log (primedSpell);
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	}
 
 	/// <summary>
@@ -470,7 +285,6 @@ public class TileSelector : MonoBehaviour
 	public void ShowTiles() {
 		ClearShownTiles();
 
-<<<<<<< HEAD
 		foreach(Tile t in actionCharacter.pathing.rangeTiles) {
 			Transform tileTransform = t.TileObject.transform;
 			Vector3 newPos = tileTransform.position + new Vector3(t.TileSet.WorldDims.x * 0.5f, t.TileSet.WorldDims.y * 0.5f, 0);
@@ -480,17 +294,6 @@ public class TileSelector : MonoBehaviour
 			else
 				rangeTileObjs.Add(Instantiate(rangePrefab, newPos, Quaternion.identity) as GameObject);
 		}
-=======
-			foreach(Tile t in actionCharacter.pathing.rangeTiles) {
-				Transform tileTransform = t.TileObject.transform;
-				Vector3 newPos = tileTransform.position + new Vector3(t.TileSet.WorldDims.x * 0.5f, t.TileSet.WorldDims.y * 0.5f, 0);
-				
-				if(actionCharacter.pathing.adjTiles.Contains(t))
-					adjTileObjs.Add(Instantiate(adjPrefab, newPos, Quaternion.identity) as GameObject);
-				else
-					rangeTileObjs.Add(Instantiate(rangePrefab, newPos, Quaternion.identity) as GameObject);
-			}
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	}
 
 	/// <summary>
