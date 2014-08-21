@@ -1,17 +1,7 @@
 using UnityEngine;
-<<<<<<< HEAD
 using System.Collections;
 using System.Collections.Generic;
 using X_UniTMX;
-=======
-<<<<<<< HEAD
-using System.Collections;
-using System.Collections.Generic;
-using X_UniTMX;
-=======
-using System.Collections.Generic;
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 
 [System.Serializable]
 public class GameSpell
@@ -63,20 +53,10 @@ public class GameSpell
 	#region Game Data
 
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	private GameCharacter caster = null;
 	private Tile targetTile = null;
 
 	private int startTurnTime = 0;
-<<<<<<< HEAD
-=======
-=======
-
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 
 
 	#endregion
@@ -100,10 +80,6 @@ public class GameSpell
 	#region Public Interaction
 
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	public void Cast(GameCharacter self, Tile target = null) {
 		caster = self;
 		targetTile = target;
@@ -114,10 +90,6 @@ public class GameSpell
 	public void OnCastEffect() {
 		for(int i = 0, il = baseSpell.abilityEffects.Count; i < il; i++) {
 			AbilityEffect effect = baseSpell.abilityEffects[i];
-<<<<<<< HEAD
-=======
-			Debug.Log (effect);
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 			effect.OnCastEffect(caster, targetTile);
 		}
 	}
@@ -134,16 +106,6 @@ public class GameSpell
 		}
 
 		OnCastEffect();
-<<<<<<< HEAD
-=======
-=======
-	public void OnCastEffect(GameUnit target) {
-		for(int i = 0, il = baseSpell.abilityEffects.Count; i < il; i++) {
-			AbilityEffect effect = baseSpell.abilityEffects[i];
-			effect.OnCastEffect(target);
-		}
->>>>>>> origin/master
->>>>>>> dbc9b9f45ca76778eed14be39ed942af27ad4bd7
 	}
 
 
