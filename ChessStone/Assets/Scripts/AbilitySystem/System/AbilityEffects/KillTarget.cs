@@ -4,27 +4,21 @@ using System.Collections.Generic;
 using X_UniTMX;
 
 /// <summary>
-/// Damages the target for the amount.
+/// Kills the target.
 /// REQUIRES: target must be a GameCharacter
 /// </summary>
 [System.Serializable]
-public class DamageTarget : AbilityEffect
+public class KillTarget : AbilityEffect
 {
-	/// <summary>
-	/// The amount of damage.
-	/// </summary>
-	public float amount;
-
 	public override void OnCastEffect(GameCharacter self, Tile target = null) {
 		GameCharacter targetChar = target.currUnit as GameCharacter;
-		DamageInfo damage = new DamageInfo(amount, DamageType.True);
+		DamageInfo damage = new DamageInfo(99, DamageType.True);
 		targetChar.health.OnDamage(damage);
 	}
 
 	public override AbilityEffect Clone() {
-		DamageTarget temp = new DamageTarget();
+		KillTarget temp = new KillTarget();
 		temp.id = id;
-		temp.amount = amount;
 		return temp;
 	}
 }

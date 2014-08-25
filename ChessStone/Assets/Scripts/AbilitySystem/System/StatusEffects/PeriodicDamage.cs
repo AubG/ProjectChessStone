@@ -4,25 +4,36 @@ using System.Collections.Generic;
 using X_UniTMX;
 
 /// <summary>
-/// Damages the caster every turn for the specified amount.
+/// Damages the target periodically.
 /// </summary>
 [System.Serializable]
-public class PeriodicDamage : AbilityEffect
+public class PeriodicDamage : StatusEffect
 {
 	/// <summary>
 	/// The amount of damage.
 	/// </summary>
 	public float amount;
 
-	public override void OnCastEffect(GameCharacter self, Tile target = null) {
+	/// <summary>
+	/// How often the damage should be inflicted.
+	/// </summary>
+	public int turnRateTime;
+
+	public override void OnTurnUpdate()
+	{
+		base.OnTurnUpdate();
+
 		DamageInfo damage = new DamageInfo(amount, DamageType.True);
-		self.health.OnDamage(damage);
+		target.health.OnDamage(damage);
 	}
 
-	public override AbilityEffect Clone() {
-		DamageSelf temp = new DamageSelf();
+	public override StatusEffect Clone()
+	{
+		PeriodicDamage temp = new PeriodicDamage();
 		temp.id = id;
 		temp.amount = amount;
+		temp.turnLifeTime = turnLifeTime;
+		temp.turnRateTime = turnRateTime;
 		return temp;
 	}
 }

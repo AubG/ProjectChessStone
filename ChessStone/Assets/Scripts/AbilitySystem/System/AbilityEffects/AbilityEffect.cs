@@ -12,7 +12,12 @@ public class AbilityEffect : ScriptableObject
 	public enum Identifier {
 		None,
 		DamageTarget,
-		DamageSelf
+		DamageSelf,
+	
+		KillTarget,
+		KillSelf,
+
+		CauseStatusEffectTarget
 	}
 
 	public Identifier id;

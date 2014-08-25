@@ -12,11 +12,13 @@ public class SpellDatabaseInspector : Editor
 {
 	static int mIndex = 0;
 
+	StatusEffect.Identifier mSetStatIden = StatusEffect.Identifier.None;
 	AbilityEffect.Identifier mSetIden = AbilityEffect.Identifier.None;
 	BaseSpell.CastType mSetType = BaseSpell.CastType.Passive;
 
 	bool mConfirmDelete = false;
 	bool mConfirmChangeType = false;
+	bool mConfirmChangeStatIden = false;
 
 	/// <summary>
 	/// Draw an enlarged sprite within the specified texture atlas.
@@ -385,7 +387,7 @@ public class SpellDatabaseInspector : Editor
 						
 						GUILayout.BeginHorizontal();
 						{
-							EditorGUILayout.LabelField("Effect: " + effect.id, EditorStyles.whiteLargeLabel);
+							EditorGUILayout.LabelField("Ability Effect: " + effect.id, EditorStyles.whiteLargeLabel);
 							
 							GUI.backgroundColor = Color.red;
 							if (GUILayout.Button("X", GUILayout.Width(20f)))
@@ -398,48 +400,163 @@ public class SpellDatabaseInspector : Editor
 							GUI.backgroundColor = Color.white;
 						}
 						GUILayout.EndHorizontal();
-						
-						switch(effect.id) {
-							case AbilityEffect.Identifier.DamageTarget:
-								DamageTarget damageTarget = effect as DamageTarget;
-								float dt_amount = EditorGUILayout.FloatField("Amount", damageTarget.amount, GUILayout.Width(120f));
-								if(dt_amount != damageTarget.amount) {
-									NGUIEditorTools.RegisterUndo("Ability Effects", db);
-									((DamageTarget)effect).amount = dt_amount;
+
+						// show different variables based on which AbilityEffect child is being edited
+						switch(effect.id)
+						{
+						case AbilityEffect.Identifier.DamageTarget:
+							DamageTarget dt = effect as DamageTarget;
+							float dt_amount = EditorGUILayout.FloatField("Amount", dt.amount, GUILayout.Width(120f));
+							if(dt_amount != dt.amount) {
+								NGUIEditorTools.RegisterUndo("Ability Effects", db);
+								dt.amount = dt_amount;
+							}
+							break;
+						case AbilityEffect.Identifier.DamageSelf:
+							DamageSelf ds = effect as DamageSelf;
+							float ds_amount = EditorGUILayout.FloatField("Amount", ds.amount, GUILayout.Width(120f));
+							if(ds_amount != ds.amount) {
+								NGUIEditorTools.RegisterUndo("Ability Effects", db);
+								ds.amount = ds_amount;
+							}
+							break;
+						case AbilityEffect.Identifier.CauseStatusEffectTarget:
+							CauseStatusEffectTarget cset = effect as CauseStatusEffectTarget;
+
+							if (mConfirmChangeStatIden)
+							{
+								// Show the confirmation dialog
+								GUILayout.Label("Really change status effect? All previous status effect data will be erased.");
+								
+								GUILayout.BeginHorizontal();
+								{
+									GUI.backgroundColor = Color.green;
+									if (GUILayout.Button("Cancel")) mConfirmChangeStatIden = false;
+									GUI.backgroundColor = Color.red;
+									
+									if (GUILayout.Button("Change"))
+									{
+										NGUIEditorTools.RegisterUndo("Change Status Effect", db);
+
+										StatusEffect newEffect = null;
+										
+										// create the appropriate StatusEffect child
+										switch(mSetStatIden)
+										{
+										case StatusEffect.Identifier.PeriodicDamage:
+											newEffect = new PeriodicDamage();
+											break;
+										case StatusEffect.Identifier.FreezeMovement:
+											newEffect = new FreezeMovement();
+											break;
+										case StatusEffect.Identifier.IncreaseMovementSpeed:
+											newEffect = new IncreaseMovementSpeed();
+											break;
+										}
+										
+										cset.statusEffect = newEffect;
+										newEffect.id = mSetStatIden;
+
+										mConfirmChangeStatIden = false;
+									}
+									GUI.backgroundColor = Color.white;
 								}
-								break;
-							case AbilityEffect.Identifier.DamageSelf:
-								DamageSelf damageSelf = effect as DamageSelf;
-								float ds_amount = EditorGUILayout.FloatField("Amount", damageSelf.amount, GUILayout.Width(120f));
-								if(ds_amount != damageSelf.amount) {
-									NGUIEditorTools.RegisterUndo("Ability Effects", db);
-									((DamageSelf)effect).amount = ds_amount;
+								GUILayout.EndHorizontal();
+							}
+							else
+							{
+								if(cset.statusEffect != null) mSetStatIden = cset.statusEffect.id;
+								
+								GUILayout.BeginHorizontal();
+								{
+									EditorGUILayout.LabelField("Status Effect: ", GUILayout.Width(80f));
+
+									StatusEffect.Identifier temp = (StatusEffect.Identifier)EditorGUILayout.EnumPopup(mSetStatIden, GUILayout.Width(120f));
+								
+									if (temp != StatusEffect.Identifier.None && temp != mSetStatIden)
+									{
+										mSetStatIden = temp;
+										mConfirmChangeStatIden = true;
+									}
 								}
-								break;
+								GUILayout.EndHorizontal();
+							}
+
+							StatusEffect statusEffect = cset.statusEffect;
+
+							if(statusEffect != null) {
+								switch(statusEffect.id)
+								{
+								case StatusEffect.Identifier.PeriodicDamage:
+									PeriodicDamage pd = statusEffect as PeriodicDamage;
+									
+									int pd_duration = EditorGUILayout.IntField("Duration", pd.turnLifeTime, GUILayout.Width(120f));
+									int pd_rate = EditorGUILayout.IntField("Rate", pd.turnRateTime, GUILayout.Width(120f));
+									float pd_amount = EditorGUILayout.FloatField("Amount", pd.amount, GUILayout.Width(120f));
+
+									if(pd_duration != pd.turnLifeTime || 
+									   pd_rate != pd.turnRateTime ||
+									   pd_amount != pd.amount) {
+										NGUIEditorTools.RegisterUndo("Status Effects", db);
+										pd.turnLifeTime = pd_duration;
+										pd.turnRateTime = pd_rate;
+										pd.amount = pd_amount;
+									}
+									break;
+								case StatusEffect.Identifier.FreezeMovement:
+									break;
+								case StatusEffect.Identifier.IncreaseMovementSpeed:
+									IncreaseMovementSpeed ims = statusEffect as IncreaseMovementSpeed;
+
+									int ims_duration = EditorGUILayout.IntField("Duration", ims.turnLifeTime, GUILayout.Width(120f));
+									int ims_amount = EditorGUILayout.IntField("Amount", ims.amount, GUILayout.Width(120f));
+
+									if(ims_duration != ims.turnLifeTime || 
+									   ims_amount != ims.amount) {
+										NGUIEditorTools.RegisterUndo("Status Effects", db);
+										ims.turnLifeTime = ims_duration;
+										ims.amount = ims_amount;
+									}
+									break;
+								}
+							}
+
+							break;
 						}
 					}
 					
 					GUILayout.BeginHorizontal();
 					{
-						mSetIden = (AbilityEffect.Identifier)EditorGUILayout.EnumPopup(mSetIden, GUILayout.Width(240f));
+						mSetIden = (AbilityEffect.Identifier)EditorGUILayout.EnumPopup(mSetIden, GUILayout.Width(232f));
 						
-						if (GUILayout.Button("Add Effect", GUILayout.Width(80f)) && mSetIden != AbilityEffect.Identifier.None)
+						if (GUILayout.Button("Add Ability Effect", GUILayout.Width(120f)) && mSetIden != AbilityEffect.Identifier.None)
 						{
-							NGUIEditorTools.RegisterUndo("Add Effect", db);
+							NGUIEditorTools.RegisterUndo("Add Ability Effect", db);
 							
-							AbilityEffect effect = null;
-							
-							switch(mSetIden) {
-								case AbilityEffect.Identifier.DamageTarget:
-									effect = new DamageTarget();
-									break;
-								case AbilityEffect.Identifier.DamageSelf:
-									effect = new DamageSelf();
-									break;
+							AbilityEffect newEffect = null;
+
+							// create the appropriate AbilityEffect child
+							switch(mSetIden)
+							{
+							case AbilityEffect.Identifier.DamageTarget:
+								newEffect = new DamageTarget();
+								break;
+							case AbilityEffect.Identifier.DamageSelf:
+								newEffect = new DamageSelf();
+								break;
+							case AbilityEffect.Identifier.KillTarget:
+								newEffect = new KillTarget();
+								break;
+							case AbilityEffect.Identifier.KillSelf:
+								newEffect = new KillSelf();
+								break;
+							case AbilityEffect.Identifier.CauseStatusEffectTarget:
+								newEffect = new CauseStatusEffectTarget();
+								break;
 							}
 
-							spell.abilityEffects.Add(effect);
-							effect.id = mSetIden;
+							spell.abilityEffects.Add(newEffect);
+							newEffect.id = mSetIden;
 						}
 					}
 					GUILayout.EndHorizontal();
