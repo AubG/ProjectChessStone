@@ -4,28 +4,26 @@ using System.Collections.Generic;
 using X_UniTMX;
 
 /// <summary>
-/// Damages the target for the amount.
+/// Puts a status effect on a target.
 /// REQUIRES: target must be a GameCharacter
 /// </summary>
 [System.Serializable]
-public class DamageTarget : AbilityEffect
+public class CauseStatusEffectTarget : AbilityEffect
 {
 	/// <summary>
-	/// The amount of damage.
+	/// The status effect to be put on the target.
 	/// </summary>
-	public float amount;
+	public StatusEffect statusEffect;
 
 	public override void OnCastEffect(GameCharacter self, Tile target = null) {
 		GameCharacter targetChar = target.currUnit as GameCharacter;
-		DamageInfo damage = new DamageInfo(amount, DamageType.True);
-		targetChar.health.OnDamage(damage);
-		Debug.Log ("Damaged " + targetChar.gameName + ": " + targetChar.health.currentValue + "/" + targetChar.health.adjustedMaxValue);
+		targetChar.AddStatusEffect(statusEffect);
 	}
 
 	public override AbilityEffect Clone() {
-		DamageTarget temp = new DamageTarget();
+		CauseStatusEffectTarget temp = new CauseStatusEffectTarget();
 		temp.id = id;
-		temp.amount = amount;
+		temp.statusEffect = statusEffect;
 		return temp;
 	}
 }

@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using X_UniTMX;
 
 /// <summary>
-/// Damages the caster every turn for the specified amount.
+/// Damages the target for the amount.
+/// REQUIRES: target must be a GameCharacter
 /// </summary>
 [System.Serializable]
-public class PeriodicDamage : AbilityEffect
+public class DamageTarget : AbilityEffect
 {
 	/// <summary>
 	/// The amount of damage.
@@ -15,12 +16,13 @@ public class PeriodicDamage : AbilityEffect
 	public float amount;
 
 	public override void OnCastEffect(GameCharacter self, Tile target = null) {
+		GameCharacter targetChar = target.currUnit as GameCharacter;
 		DamageInfo damage = new DamageInfo(amount, DamageType.True);
-		self.health.OnDamage(damage);
+		targetChar.health.OnDamage(damage);
 	}
 
 	public override AbilityEffect Clone() {
-		DamageSelf temp = new DamageSelf();
+		DamageTarget temp = new DamageTarget();
 		temp.id = id;
 		temp.amount = amount;
 		return temp;

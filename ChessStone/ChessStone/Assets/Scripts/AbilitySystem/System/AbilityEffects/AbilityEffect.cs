@@ -7,24 +7,25 @@ using X_UniTMX;
 /// Effects for abilities; what happens when they are cast.
 /// </summary>
 [System.Serializable]
-public class StatusEffect : ScriptableObject
+public class AbilityEffect : ScriptableObject
 {
 	public enum Identifier {
 		None,
-		PeriodicDamage
+		DamageTarget,
+		DamageSelf,
+	
+		KillTarget,
+		KillSelf,
+
+		CauseStatusEffectTarget
 	}
 
 	public Identifier id;
 
-	/// <summary>
-	/// The life time of the status effects in terms of turns.
-	/// </summary>
-	public int turnLifeTime;
-
 	public virtual void OnCastEffect(GameCharacter self, Tile target = null) {}
 
-	public virtual StatusEffect Clone() {
-		StatusEffect newEffect = new StatusEffect();
+	public virtual AbilityEffect Clone() {
+		AbilityEffect newEffect = new AbilityEffect();
 		newEffect.id = id;
 		return newEffect;
 	}
