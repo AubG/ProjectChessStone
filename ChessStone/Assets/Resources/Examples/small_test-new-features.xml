@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="10" height="4" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16">
+  <image source="tiles.png" width="256" height="256"/>
+  <tile id="47">
+   <animation>
+    <frame tileid="40" duration="100"/>
+    <frame tileid="41" duration="100"/>
+    <frame tileid="42" duration="100"/>
+    <frame tileid="43" duration="100"/>
+    <frame tileid="44" duration="100"/>
+    <frame tileid="45" duration="100"/>
+    <frame tileid="46" duration="100"/>
+    <frame tileid="47" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
+ <layer name="Camada de Tiles 1" width="10" height="4">
+  <data encoding="base64" compression="zlib">
+   eJxjYGBgYGKAABYobQDEYlA2G5R2BGInIHbGQ7sAcSAQBwFxMB46BIgTgTgJiJPx0ClADABR5gn+
+  </data>
+ </layer>
+ <objectgroup name="Objs">
+  <object x="85.3888" y="28.8888" width="16" height="16" rotation="30"/>
+  <object x="42.8431" y="22.8223" rotation="-315">
+   <polyline points="0,0 16,16 32,0 32,16"/>
+  </object>
+ </objectgroup>
+</map>
