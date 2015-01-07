@@ -32,6 +32,12 @@ namespace X_UniTMX
 		public int GID { get; private set; }
 
 		/// <summary>
+		/// X and Y locations on the grid.
+		/// </summary>
+		public int x { get; set; }
+		public int y { get; set; }
+
+		/// <summary>
         /// Gets the Texture2D to use when drawing the tile.
         /// </summary>
         public TileSet TileSet { get; set; }
@@ -61,10 +67,19 @@ namespace X_UniTMX
 		/// </summary>
         public GameObject TileObject { get; set; }
 
+		public GameObject TileHighlightObject { get; set; }
+
+		/// <summary>
+		/// The center position of the tile object.
+		/// </summary>
+		public Vector3 centerPos { get; set; }
+
 		///<summary>
 		/// Gets or sets the Unit that is currently on this tile.
 		/// </summary>
 		public GameUnit currUnit { get; set; }
+
+		public bool walkable { get; set; }
 
 		/// <summary>
 		/// Gets or sets this Tile's Sprite
@@ -97,6 +112,7 @@ namespace X_UniTMX
 			// Create Sprite
 			TileSprite = Sprite.Create(TileSet.Texture, Source, Vector2.zero, TileSet.TileWidth, (uint)(TileSet.Spacing * 2));
 			TileSprite.name = GID.ToString();
+			walkable = GetPropertyAsBoolean("walkable");
         }
 
 		/// <summary>

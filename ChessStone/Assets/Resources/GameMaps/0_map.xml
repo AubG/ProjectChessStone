@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="15" height="11" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="Tiles" tilewidth="32" tileheight="32">
+  <image source="DesertTile.png" width="96" height="96"/>
+ </tileset>
+ <layer name="Tiles" width="15" height="11">
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgYBzFo3gQYQDYkACm
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="15" height="11">
+  <object name="MerchantNode" type="MerchantNode" x="64" y="128" width="32" height="32">
+   <properties>
+    <property name="merchant id" value="0"/>
+    <property name="node domain id" value="0"/>
+    <property name="node name" value="Fred"/>
+   </properties>
+  </object>
+  <object name="StageNode" type="StageNode" x="64" y="64" width="32" height="32">
+   <properties>
+    <property name="node domain id" value="1"/>
+    <property name="node name" value="DAE Archive #544"/>
+    <property name="stage id" value="12"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

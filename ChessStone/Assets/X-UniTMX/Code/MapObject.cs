@@ -333,7 +333,7 @@ namespace X_UniTMX
 			if (Properties.TryGetValue(property.ToLowerInvariant(), out p))
 				str = p.RawValue;
 
-			Int32.TryParse(str, out b);
+			if(!Int32.TryParse(str, out b)) b = -1;
 
 			return b;
 		}

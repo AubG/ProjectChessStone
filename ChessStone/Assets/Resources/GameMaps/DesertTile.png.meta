@@ -1,6 +1,16 @@
 fileFormatVersion: 2
 guid: a5f00c349ef8d7e46858b12eef74fcbd
 TextureImporter:
+  fileIDToRecycleName:
+    21300000: DesertoLiso
+    21300002: DesertoCacto
+    21300004: DesertoPedra
+    21300006: DesertoMato1
+    21300008: DesertoMato2
+    21300010: DesertoMato3
+    21300012: DesertoPlaca
+    21300014: DesertoMato4
+    21300016: DesertoMato5
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

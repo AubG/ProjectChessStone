@@ -1608,6 +1608,7 @@ namespace X_UniTMX
 					newPrefab.name = (addTileName ? (_mapName + "_") : "") + obj.Name;
 					int indexMessage = 0;
 					string prefabMensage = obj.GetPropertyAsString(indexPrefab + "-prefab sendmessage " + indexMessage);
+
 					while ("".Equals(prefabMensage) == false)
 					{
 						string[] menssage = prefabMensage.Split(new[] { '|' }, StringSplitOptions.None);
@@ -1619,7 +1620,7 @@ namespace X_UniTMX
 						prefabMensage = obj.GetPropertyAsString(indexPrefab + "-prefab sendmessage " + indexMessage);
 					}
 
-					// SEE HERE THE PREFABS NEED TO BE ADDED INTO A LIST OR THE UNITS NEEDED TO BE ADDED TO A LIST
+					// TODO: SEE HERE THE PREFABS NEED TO BE ADDED INTO A LIST OR THE UNITS NEEDED TO BE ADDED TO A LIST
 					obj.go = newPrefab;
 				}
 				else

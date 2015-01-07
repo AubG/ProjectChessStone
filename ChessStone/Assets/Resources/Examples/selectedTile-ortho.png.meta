@@ -1,6 +1,8 @@
 fileFormatVersion: 2
 guid: f6b24cad1efb5804d8f956b77278ba1e
 TextureImporter:
+  fileIDToRecycleName:
+    21300000: selectedTile-ortho
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

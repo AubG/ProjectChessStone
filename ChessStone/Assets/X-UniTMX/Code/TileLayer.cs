@@ -197,6 +197,10 @@ namespace X_UniTMX
 
 					// put that tile in our grid
 					Tiles[x, y] = t;
+					// TODO: The location should be set in the constructor
+					// or just somewhere better IMO
+					t.x = x;
+					t.y = y;
 				}
 			}
 			
