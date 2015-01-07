@@ -1,6 +1,8 @@
 fileFormatVersion: 2
 guid: 1d51ce2dde0580c4c9344415dfbade68
 TextureImporter:
+  fileIDToRecycleName:
+    21300000: TileParedes
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

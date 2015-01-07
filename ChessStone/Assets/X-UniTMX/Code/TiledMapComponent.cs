@@ -31,6 +31,8 @@ public class TiledMapComponent : MonoBehaviour {
 	public bool isToLoadOnStart = false;
 	public bool addTileNameToColliderName = true;
 
+	public MonoBehaviour postInitClient;
+
 	private Map tiledMap;
 
 	public Map TiledMap
@@ -61,7 +63,7 @@ public class TiledMapComponent : MonoBehaviour {
 		tiledMap = new Map(MapTMX, MakeUniqueTiles, MapTMXPath, gameObject, materialDefaultFile, DefaultSortingOrder);
 		Resources.UnloadUnusedAssets();
 		if (GenerateCollider) GenerateColliders();
-		GameMap.Instance.Initialize(tiledMap);
+		if(postInitClient != null) postInitClient.SendMessage("PostInit", tiledMap, SendMessageOptions.RequireReceiver);
 		return true;
 	}
 

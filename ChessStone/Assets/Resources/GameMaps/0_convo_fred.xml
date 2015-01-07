@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <conversation width="15" height="11">
+  <convopoint type="ConvoSpeech">
+   <option type="ConvoOption">
+    <property name="convo root" value="true"/>
+    <property name="speech text" value="Hey there. Got some legit software for you. The question is... can you handle it?"/>
+   </option>
+  </convopoint>
+ </conversation>

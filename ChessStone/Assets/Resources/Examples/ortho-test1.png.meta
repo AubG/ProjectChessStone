@@ -1,6 +1,8 @@
 fileFormatVersion: 2
 guid: e65a5b32a2591b6449a66ea3df4d0269
 TextureImporter:
+  fileIDToRecycleName:
+    21300000: ortho-test1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

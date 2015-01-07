@@ -178,6 +178,8 @@ namespace X_UniTMX
 			TMComponent.MapTMX = (TextAsset)EditorGUILayout.ObjectField("Map xml:", TMComponent.MapTMX, typeof(TextAsset), true);
 			TMComponent.MapTMXPath = EditorGUILayout.TextField("Map path name: ", TMComponent.MapTMXPath);
 
+			TMComponent.postInitClient = (MonoBehaviour)EditorGUILayout.ObjectField("Post Init Client: ", TMComponent.postInitClient, typeof(MonoBehaviour), true);
+
 			DoCollidersGUI(TMComponent);
 			DoImportMapButtonGUI(TMComponent);
 			DoClearMapButtonGUI(TMComponent);

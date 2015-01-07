@@ -1,6 +1,8 @@
 fileFormatVersion: 2
 guid: 848ca023c3cddcd4598548b11db1db86
 TextureImporter:
+  fileIDToRecycleName:
+    21300000: tilechao4
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
