@@ -129,7 +129,7 @@ namespace X_UniTMX_Example {
 				GameObject clone = Instantiate(prefabShoot) as GameObject;
 				clone.transform.position = gameObject.transform.position;
 				clone.transform.parent = gameObject.transform.parent;
-				clone.rigidbody2D.velocity = (directionEnemy*velocityShoot);
+				clone.GetComponent<Rigidbody2D>().velocity = (directionEnemy*velocityShoot);
 			}
 		}
 	    

@@ -1,16 +1,112 @@
 /** \page changelog Changelog
 
+- 3.6 (2015-02-02)
+	- Upgrade notes:
+		- Cache data for faster startup is now stored in a separate file.\n
+			This reduces the huge lag some users have been experiencing since Unity changed their Undo system.\n
+			You will need to open the AstarPath components which used cached startup, go to the save and load tab
+			and press a button labeled "Transfer cache data to a separate file".
+	- Highlights:
+		- Added support for the Jump Point Search algorithm on grid graphs (pro only).\n
+			The JPS algorithm can be used to speed up pathfinding on grid graphs *without any penalties or tag weights applied* (it only works on uniformly weighted graphs).
+			It can be several times faster than normal A*.
+			It works best on open areas.
+		- Added support for heuristic optimizations (pro only).\n
+			This can be applied on any static graph, i.e any graph which does not change.
+			It requires a rather slow preprocessing step so graph updates will be really slow when using this.
+			However when the preprocessing is done, it can speed up pathfinding with an order of magnitude.
+			It works especially well in mazes with lots of options and dead ends.\n
+			Combined with JPS (mentioned above) I have seen it perform up to 20x better than regular A* with no heuristic optimizations.
+		- Added PointNode.gameObject which will contain the GameObject each node was created from.
+		- Added support for RVO obstacles.\n
+			It is by no means perfect at this point, but at least it works.
+		- Undo works reasonably well again.\n
+			It took a lot of time working around weird Unity behaviours.
+			For example Unity seems to send undo events when dragging items to object fields (why? no idea).
+		- Dragging meshes to the NavmeshGraph.SourceMesh field works again.\n
+			See fix about undo above.
+		- Extended the max number of possible areas (connected components) to 2^17 = 131072 up from 2^10 = 1024.\n
+			No memory usage increase, just shuffling bits around.\n
+			Deprecated compiler directive ASTAR_MORE_AREAS
+		- Extended the max number of graphs in the inspector to 256 up from 4 or 32 depending on settings.\n
+			No memory usage increase, just shuffling bits around.
+			I still don't recommend that you actually use this many graphs.
+		- Added RecastTileUpdate and RecastTileUpdateHandler scripts for easier recast tile updating with good performance.
+		- When using A* Inspector -> Settings -> Debug -> Path Debug Mode = {G,F,H,Penalties}
+			you previously had to set the limits for what should be displayed as "red" in the scene view yourself, this is now
+			optionally automatically calculated. The UI for it has also been improved.
+	- Improvements:
+		- Added penaltyAnglePower to Grid Graph -> Extra -> Penalty from Angle.\n
+			This can be used to increase the penalty even more for large angles than for small angles (more than it already does, that is).
+		- ASTAR_NO_JSON now works for recast graphs as well.
+		- Added custom inspector for RecastMeshObj, hopefully it will not be as confusing anymore.
+	- Changes:
+		- FleePath now has a default flee strength of 1 to avoid confusion when the FleePath doesn't seem to flee from anything.
+		- Removed some irrelevant defines from the Optimizations tab.
+		- IAgent.Position cannot be changed anymore, instead use the Teleport and SetYPosition methods.
+		- Exposed GraphUpdateObject.changedNodes.
+		- Deprecated the threadSafe paremeter on RegisterSafeUpdate, it is always treated as true now.
+		- The default value for AstarPath.minAreaSize is now 0 since the number of areas (connected component) indices has been greatly increased (see highlights).
+		- Tweaked ProceduralWorld script (used for the "Procedural" example scene) to reduce FPS drops.
+	- Fixes:
+		- AstarPath.FlushGraphUpdates will now complete all graph updates instead of just making sure they have started.\n
+			In addition to avoiding confusion, this fixes a rare null reference exception which could happen when using 
+			the GraphUpdateUtilities.UpdateGraphsNoBlock method.
+		- Fixed some cases where updating recast graphs could throw exceptions. (message begun with "No Voxelizer object. UpdateAreaInit...")
+		- Fixed typo in RVOSimulator. desiredSimulatonFPS -> desiredSimulationFPS.
+		- RVO agents move smoother now (previously their velocity could change widely depending on the fps, the average velocity was correct however)
+		- Fixed an exception which could, with some graph settings, be thrown when deserializing on iPhone when bytecode stripping was enabled.
+		- Fixed a NullReferenceException in MultiTargetPath which was thrown if the path debug mode was set to "Heavy".
+		- Fixed PathUtilies.BFS always returning zero nodes (thanks Ajveach).
+		- Made reverting GraphUpdateObjects work. The GraphUpdateUtilities.UpdateGraphsNoBlock was also fixed by this change.
+		- Fixed compile error with monodevelop.
+		- Fixed a bug which caused scanning to fail if more than one NavmeshGraph existed.
+		- Fixed the lightweight local avoidance example scene which didn't work previously.
+		- Fixed SimpleSmoothModifier not exposing Roundness Factor in the editor for the Curved Nonuniform mode.
+		- Fixed an exception when updating RecastGraphs and using RelevantGraphSurfaces and multithreading.
+		- Fixed exceptions caused by starting paths from other threads than the Unity thread.
+		- Fixed an infinite loop/out of memory exception that could occur sometimes when graph updates were being done at the start of the game (I hate multithreading race conditions).
+		- Fixed the Optimizations tab not working when JS Support was enabled.
+		- Fixed graph updating not working on navmesh graphs (it was broken before due to a missing line of code).
+		- Fixed some misspelled words in the documentation.
+		- Removed some unused and/or redundant variables.
+		- Fixed a case where graphs added using code might not always be configured correctly (and would throw exceptions when scanning).
+		- Improved Windows Store compatibility.
+		- Fixed a typo in the GridGraph which could cause compilation to fail when building for Windows Phone or Windows Store (thanks MariuszP)
+		- Lots of code cleanups and comments added to various scripts.
+		- Fixed some cases where MonoDevelop would pick up the wrong documention for fields since it doesn't support all features that Doxygen supports.
+		- Fixed a bug which caused the points field on GraphUpdateScene to sometimes not be editable.
+		- Fixed a bug which could cause RVO agents not to move if the fps was low and Interpolation and Double Buffering was used.
+		- Set the execution order for RVOController and RVOSimulator to make sure that other scripts will
+			get the latest position in their Update method.
+		- Fixed a bug which could cause some nearest point on line methods in AstarMath to return NaN.
+			This could happen when Seeker->Start End Modifier->StartPoint and EndPoint was set to Interpolate.
+		- Fixed a runtime error on PS Vita.
+		- Fixed an index out of range exception which could occur when scanning LayeredGridGraphs.
+		- Fixed an index out of range exception which could occur when drawing gizmos for a LayeredGridGraph.
+		- Fixed a bug which could cause ProduralGridMover to update the graph every frame regardless
+		  of if the target moved or not (thanks Makak for finding the bug).
+		- Fixed a number of warnings in Unity 5.
+		
+- 3.5.9.7 (3.6 beta 6, 2015-01-28)
+- 3.5.9.6 (3.6 beta 5, 2015-01-28)
+- 3.5.9.5 (3.6 beta 4, 2015-01-27)
+- 3.5.9.1 (3.6 beta 3, 2014-10-14)
+- 3.5.9   (3.6 beta 2, 2014-10-13)
+- 3.5.8   (3.6 beta 1)
+	 - See release notes for 3.6
+
 - 3.5.2 (2013-09-01) (tiny bugfix and small feature release)
 	- Added isometric angle option for grid graphs to help with isometric 2D games.
 	- Fixed a bug with the RVOAgent class which caused the LightweightRVO example scene to not work as intended (no agents were avoiding each other).
 	- Fixed some documentation typos.
 	- Fixed some compilations errors some people were having with other compilers than Unity's.
 
-- 3.5.1 (2013-06-15)
+- 3.5.1 (2014-06-15)
 	- Added avoidance masks to local avoidance.
 		Each agent now has a layer and each agent can specify which layers it will avoid.
 
-- 3.5 (2013-06-12)
+- 3.5 (2014-06-12)
 	- Added back local avoidance!!
 		The new system uses a sampling based algorithm instead of a geometric one.
 		The API is almost exactly the same so if you used the previous system this will be a drop in replacement.
@@ -243,8 +339,8 @@
 			was destroyed.
 		- When using a non-positive maxDistance for point graphs less processing power will be used.
 		- Removed unused 'recyclePaths' variable in the AIPath class.
-		- NullReferenceException could ocurr if the Pathfinding.Node.connections array was null.
-		- Fixed NullReferenceException which could ocurr sometimes when using a MultiTargetPath (Issue #16)
+		- NullReferenceException could occur if the Pathfinding.Node.connections array was null.
+		- Fixed NullReferenceException which could occur sometimes when using a MultiTargetPath (Issue #16)
 		- Changed Ctrl to Alt when recalcing path continously in the Path Types example scene to avoid
 			clearing the points for the MultiTargetPath at the same time (it was also using Ctrl).
 		- Fixed strange looking movement artifacts during the first few frames when using RVO and interpolation was enabled.
@@ -507,7 +603,7 @@
 	- Reverted back to manually setting the dark skin option, since it didn't work in all cases, however if a dark skin is detected, the user will be asked if he/she wants to enable the dark skin
 	- Added gizmos for the AIFollow script which shows the current waypoint and a circle around it illustrating the distance required for it to be considered "reached".
 	- The C# version of Recast does now use Character Radius instead of Erosion Radius (world units instead of voxels)
-	- Fixed an IndexOutOfRange exception which could ocurr when saving a graph with no nodes to file
+	- Fixed an IndexOutOfRange exception which could occur when saving a graph with no nodes to file
 	- <b>Known Bugs:</b> The C++ version of Recast does not work on Windows
 - 3.0.6
 	- Added support for a C++ version of Recast which means faster scanning times and more features (though almost no are available at the moment since I haven't added support for them yet).
@@ -525,7 +621,7 @@
 	- List Graphs can now gather nodes based on GameObject tags instead of all nodes as childs of a specific GameObject.
 	- List Graphs can now search recursively for childs to the 'root' GameObject instead of just searching through the top-level children.
 	- Added custom area colors which can be edited in the inspector (A* inspector --> Settings --> Color Settings --> Custom Area Colors)
-	- Fixed a NullReference bug which could ocurr when loading a Unity Reference with the AstarSerializer.
+	- Fixed a NullReference bug which could occur when loading a Unity Reference with the AstarSerializer.
 	- Fixed some bugs with the FleePath and RandomPath which could cause the StartEndModifier to assign the wrong endpoint to the path.
 	- Documentation is now more clear on what is A* Pathfinding Project Pro only features.
 	- Pathfinding.NNConstraint now has a variable to constrain which graphs to search (A* Pro only).\n
@@ -559,7 +655,5 @@
 - .x releases are quite big feature updates
 - ..x releases are the most common updates, fix bugs, add some features etc.
 - ...x releases are quickfixes, most common when there was a really bad bug which needed fixing ASAP.
-
-Dates are written according to ISO 8601.
 
  */

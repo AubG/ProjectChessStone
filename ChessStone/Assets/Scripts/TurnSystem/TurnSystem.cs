@@ -12,6 +12,7 @@ public class TurnSystem : MonoBehaviour {
 
 		Action,
 		Finish,
+		Next,
 		
 		End
 	}
@@ -22,16 +23,10 @@ public class TurnSystem : MonoBehaviour {
 	#endregion
 
 	#region Graphics Data
-
-
-	[SerializeField]
-	private GameObject announcementParent;
+	
 
 	[SerializeField]
 	private UITurnIndicator turnIndicator;
-
-	[SerializeField]
-	private UILabel timeLeftLabel;
 
 
 	#endregion
@@ -90,7 +85,7 @@ public class TurnSystem : MonoBehaviour {
 		turnIndicator.ShowIndicator(true);
 
 		while(true) {
-			Debug.Log ("Turn: " + focusPlayerIndex);
+			//Debug.Log ("Turn: " + focusPlayerIndex);
 			bool isLocal = focusPlayerIndex == PlayerManager.Instance.localPlayerIndex;
 			bool interactable = isLocal ? true : (PlayerManager.Instance.GetPlayer(focusPlayerIndex).controllerType == Player.ControllerType.Computer);
 
@@ -128,7 +123,7 @@ public class TurnSystem : MonoBehaviour {
 		currState = State.Begin;
 		timeLeft = timeBetweenTurns;
 		
-		while(currState != State.End) {
+		while(currState != State.Next) {
 			switch(currState)
 			{
 			case State.Begin:
@@ -181,7 +176,7 @@ public class TurnSystem : MonoBehaviour {
 	private IEnumerator HandleFinish() {
 		yield return new WaitForSeconds(1.0f);
 
-		currState = State.End;
+		currState = State.Next;
 	}
 
 

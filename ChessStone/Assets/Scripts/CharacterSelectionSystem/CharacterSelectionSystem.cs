@@ -21,18 +21,6 @@ public class CharacterSelectionSystem : MonoBehaviour {
 	
 	#endregion
 
-	#region Graphics Data
-	
-
-	[SerializeField]
-	private UILabel announcementLabel;
-
-	[SerializeField]
-	private UILabel timeLeftLabel;
-
-
-	#endregion
-
 	#region Modular Data
 	
 	

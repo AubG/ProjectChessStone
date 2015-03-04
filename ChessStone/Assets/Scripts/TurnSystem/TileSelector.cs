@@ -5,7 +5,7 @@ using X_UniTMX;
 
 public delegate void OnTileVoidDelegate(Tile t);
 
-public sealed class TileSelector : Singleton<TileSelector>
+public sealed class TileSelector : MonoBehaviour
 {
 	#region State Data
 
@@ -32,13 +32,13 @@ public sealed class TileSelector : Singleton<TileSelector>
 	#region Initialization
 	
 
-	public void StartSelect()
+	public void Begin()
 	{
 		currState = State.Neutral;
 		StartCoroutine(UpdateSelection());
 	}
 
-	public void StopSelect() {
+	public void End() {
 		currState = State.End;
 	}
 
@@ -60,16 +60,6 @@ public sealed class TileSelector : Singleton<TileSelector>
 
 	#endregion
 
-	#region Event Handlers
-
-
-	private void ClickTile(Tile t) {
-		clickCallback(t);
-	}
-
-
-	#endregion
-
 	#region Helpers
 
 
@@ -83,7 +73,7 @@ public sealed class TileSelector : Singleton<TileSelector>
 			if(targetIndices.x <= 0 || targetIndices.x >= mainGrid.Width || targetIndices.y <= 0 || targetIndices.y >= mainGrid.Height) return;
 			//Debug.Log ("clicked " + targetIndices.x + ", " + targetIndices.y);
 			Tile clickedTile = GameMap.Instance.mainGrid[(int)targetIndices.x, (int)targetIndices.y];
-			ClickTile(clickedTile);
+			clickCallback(clickedTile);
 		}
 	}
 

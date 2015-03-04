@@ -264,9 +264,7 @@ namespace Pathfinding {
 			
 			graph.cutCorners = EditorGUILayout.Toggle (new GUIContent ("Cut Corners","Enables or disables cutting corners. See docs for image example"),graph.cutCorners);
 			graph.neighbours = (NumNeighbours)EditorGUILayout.EnumPopup (new GUIContent ("Connections","Sets how many connections a node should have to it's neighbour nodes."),graph.neighbours);
-			
-			//GUILayout.BeginHorizontal ();
-			//EditorGUILayout.PrefixLabel ("Max Climb");
+
 			graph.maxClimb = EditorGUILayout.FloatField (new GUIContent ("Max Climb","How high, relative to the graph, should a climbable level be. A zero (0) indicates infinity"),graph.maxClimb);
 			if ( graph.maxClimb < 0 ) graph.maxClimb = 0;
 			EditorGUI.indentLevel++;
@@ -304,10 +302,11 @@ namespace Pathfinding {
 					EditorGUILayout.HelpBox ("When using 2D it is recommended to rotate the graph so that it aligns with the 2D plane.", MessageType.Warning );
 				}
 			}
-			
+
 			Separator ();
+			GUILayout.Label (new GUIContent ("Advanced"), EditorStyles.boldLabel);
 			
-			showExtra = EditorGUILayout.Foldout (showExtra, "Extra");
+			showExtra = EditorGUILayout.Foldout (showExtra, "Penalty Modifications");
 			
 			if (showExtra) {
 				EditorGUI.indentLevel+=2;
@@ -318,8 +317,9 @@ namespace Pathfinding {
 				if (graph.penaltyAngle) {
 					EditorGUI.indentLevel++;
 					graph.penaltyAngleFactor = EditorGUILayout.FloatField (new GUIContent ("Factor","Scale of the penalty. A negative value should not be used"),graph.penaltyAngleFactor);
+					graph.penaltyAnglePower = EditorGUILayout.Slider ("Power", graph.penaltyAnglePower, 0.1f, 10f);
 					//GUI.enabled = preGUI;
-					HelpBox ("Applies penalty to nodes based on the angle of the hit surface during the Height Testing");
+					HelpBox ("Applies penalty to nodes based on the angle of the hit surface during the Height Testing\nPenalty applied is: P=(1-cos(angle)^power)*factor.");
 					
 					EditorGUI.indentLevel--;
 				}
@@ -343,6 +343,7 @@ namespace Pathfinding {
 				GUI.enabled = true;
 				EditorGUI.indentLevel-=2;
 			}
+
 		}
 	
 		

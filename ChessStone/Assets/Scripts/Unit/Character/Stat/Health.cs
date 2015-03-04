@@ -77,7 +77,7 @@ public class Health : MonoBehaviour {
 			newLink = (GameUnitLink)Instantiate(links.Last.Value);
 			GameMap.Instance.RegisterUnit(newLink);
 		} else {
-			newLink = CharacterManager.Instance.CreateLink(linkColor);
+			newLink = CharacterBuilder.Instance.CreateLink(linkColor);
 		}
 
 		newLink.name = _head.name + "." + links.Count;
@@ -100,7 +100,7 @@ public class Health : MonoBehaviour {
 		if(isDead || amount <= 0) return;
 
 		// Decrease health by damage and send damage signals
-		StartCoroutine(UpdateDamage(amount, finishedCallback));
+		StartCoroutine(UpdateDamage(amount, source, finishedCallback));
 
 		// Die if no health left
 		if (currSize <= 0) {
@@ -108,7 +108,7 @@ public class Health : MonoBehaviour {
 		}
 	}
 
-	private IEnumerator UpdateDamage (int amount, DamageFinishedDelegate finishedCallback = null) {
+	private IEnumerator UpdateDamage (int amount, GameCharacter source, DamageFinishedDelegate finishedCallback = null) {
 		int count = 0;
 		while(count < amount && links.Count > 0) {
 			RemoveTail();
@@ -117,7 +117,7 @@ public class Health : MonoBehaviour {
 		}
 
 		if(count < amount) {
-			GameMap.Instance.RemoveUnit(_head);
+			GameMap.Instance.KillCharacter(_head, source);
 		}
 
 		finishedCallback();

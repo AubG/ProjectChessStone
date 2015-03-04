@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Player : MonoBehaviour
 {
@@ -51,14 +52,17 @@ public class Player : MonoBehaviour
 			_characters[i].Reset();
 		}
 	}
-	
+
+	public GameCharacter GetNextUnfinishedCharacter() {
+		return _characters.Where(x => !x.finished).FirstOrDefault();
+	}
+
 	public bool CheckFinishedCharacters() {
-		for(int i = 0, il = _characters.Count; i < il; i++) {
-			GameCharacter c = _characters[i];
-			if(!c.finished) return false;
-		}
-		
-		return true;
+		return GetNextUnfinishedCharacter() == null;
+	}
+
+	public int NumCharacters() {
+		return characters.Count;
 	}
 	
 	

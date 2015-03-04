@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public delegate void OnNodeVoidDelegate(MapNode t);
 
-public sealed class NodeSelector : Singleton<NodeSelector>
+public sealed class NodeSelector : MonoBehaviour
 {
 	#region State Data
 
@@ -23,9 +23,9 @@ public sealed class NodeSelector : Singleton<NodeSelector>
 
 	#region Game Data
 	
-	
-	public OnNodeVoidDelegate clickCallback;
 
+	public OnNodeVoidDelegate clickCallback;
+	
 	private MapNode focusedNode;
 
 	private Collider2D[] hits = new Collider2D[3];
@@ -34,14 +34,14 @@ public sealed class NodeSelector : Singleton<NodeSelector>
 	#endregion
 
 	#region Initialization
-	
-	public void StartSelect()
-	{
+
+
+	public void Begin() {
 		currState = State.Neutral;
 		StartCoroutine(UpdateSelection());
 	}
 
-	public void StopSelect() {
+	public void End() {
 		currState = State.End;
 	}
 
@@ -63,16 +63,6 @@ public sealed class NodeSelector : Singleton<NodeSelector>
 
 	#endregion
 
-	#region Event Handlers
-
-
-	private void ClickNode(MapNode n) {
-		clickCallback(n);
-	}
-
-
-	#endregion
-
 	#region Helpers
 
 
@@ -81,19 +71,19 @@ public sealed class NodeSelector : Singleton<NodeSelector>
 
 		if(Physics2D.OverlapPointNonAlloc(worldPoint, hits) > 0) {
 			int i = 0;
+
 			for(; i < hits.Length; i++) if(hits[i] != null && hits[i].tag == "MapNode") break;
 
 			if(i != hits.Length) {
 				MapNode temp = hits[i].GetComponent<MapNode>();
-
+				
 				if(temp != focusedNode) {
 					// highlight
+					focusedNode = temp;
 				}
-
-				focusedNode = temp;
-
+				
 				if(Input.GetButtonDown("Fire1")) {
-					ClickNode(temp);
+					clickCallback(temp);
 				}
 			}
 		}

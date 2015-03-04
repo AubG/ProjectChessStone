@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using X_UniTMX;
 using Pathfinding;
 
+public delegate void KillCharacterDelegate(GameCharacter killed, GameCharacter killer);
+
 /// <summary>
 /// Singleton that describes a game map that has all of the main tiles and units on the map.
 /// </summary>
@@ -18,12 +20,14 @@ public class GameMap : Singleton<GameMap>
 	public int DefaultSortingOrder = 0;
 	public bool MakeUniqueTiles = true;
 
-	public TextAsset MapTMX;
-
 
 	#endregion
 
 	#region Graphics Data
+
+
+	[SerializeField]
+	private GameUnit spawnPointPrefab;
 
 	[SerializeField]
 	private GameObject tileHighlightPrefab;
@@ -37,34 +41,17 @@ public class GameMap : Singleton<GameMap>
 	#region Data
 
 
-	/// <summary>
-	/// The main map instance of the game.
-	/// </summary>
 	public Map map { get; private set; }
-
-	/// <summary>
-	/// The main tile grid of the game.
-	/// Can be used to get the 2D array of Tiles for the entire map.
-	/// </summary>
 	public TileGrid mainGrid { get; private set; }
-
 	public GridGraph mainGraph { get; private set; }
-
 	public Bounds mainBounds { get; private set; }
-
-	/// <summary>
-	/// Gets all the units on the map.
-	/// </summary>
-	/// <value>The main units.</value>
+	
 	private List<GameUnit> _mainUnits = new List<GameUnit>();
 	public List<GameUnit> mainUnits {
 		get { return _mainUnits; }
 		private set { _mainUnits = value; }
 	}
-
-	/// <summary>
-	/// Gets all the characters on the map.
-	/// </summary>
+	
 	private List<GameUnit> _mainCharacters = new List<GameUnit>();
 	public List<GameUnit> mainCharacters {
 		get { return _mainCharacters; }
@@ -76,6 +63,14 @@ public class GameMap : Singleton<GameMap>
 		get { return _spawnTiles; }
 		private set { _spawnTiles = value; }
 	}
+
+
+	#endregion
+
+	#region Event Data
+
+
+	private KillCharacterDelegate killCharacterCallback;
 
 
 	#endregion
@@ -93,11 +88,10 @@ public class GameMap : Singleton<GameMap>
 	public IEnumerator Init() {
 		yield return StartCoroutine(WaitUntilLoaded());
 
-		StageData stage = StageManager.Instance.LoadStage(PlayerData.Instance.currStage);
-		LoadMap(stage.mapPath);
+		GameStateManager.Instance.Begin();
 
-		map = new Map(MapTMX, MakeUniqueTiles, MapTMXPath, gameObject, materialDefaultFile, DefaultSortingOrder);
-		Resources.UnloadUnusedAssets();
+		StageData currStage = StageManager.Instance.LoadStage(PlayerData.Instance.currStage);
+		LoadMap(currStage.mapPath);
 	
 		InitializeTiles();
 		InitializeCamera();
@@ -109,14 +103,15 @@ public class GameMap : Singleton<GameMap>
 		TextAsset resourceXML = Resources.Load<TextAsset>(resourcePath);
 		Resources.UnloadUnusedAssets();
 		if (resourceXML != null) {
-			MapTMX = resourceXML;
+			map = new Map(resourceXML, MakeUniqueTiles, MapTMXPath, gameObject, materialDefaultFile, DefaultSortingOrder);
+			Resources.UnloadUnusedAssets();
 		} else {
 			Debug.LogError("XML doesn't exist at: Resources/" + resourcePath);
 		}
 	}
 
 	private IEnumerator WaitUntilLoaded() {
-		while(!PlayerData.Instance.loaded) {
+		while(!PlayerData.Instance || !PlayerData.Instance.loaded) {
 			yield return null;
 		}
 	}
@@ -124,30 +119,27 @@ public class GameMap : Singleton<GameMap>
 	private void InitializeTiles() {
 		mainGrid = map.GetTileLayer("Tiles").Tiles;
 
-		Tile t = null;
-		float maxHeight = 0f, sizeX = 0f, sizeY = 0f;
+		Vector2 dims = map.TileSets[0].WorldDims;
+		
+		float sizeX = dims.x * mainGrid.Width;
+		float sizeY = dims.y * mainGrid.Height;
 		
 		// Initialize the center positions of the tiles
+		Tile t = null;
 		for(int x = 0, y = 0; x < mainGrid.Width; x++) {
-			maxHeight = 0f;
 			for(y = 0; y < mainGrid.Height; y++) {
 				t = mainGrid[x, y];
 
-				t.centerPos = t.TileObject.transform.position + new Vector3(t.TileSet.WorldDims.x * 0.5f, t.TileSet.WorldDims.y * 0.5f, 0);
+				t.centerPos = t.TileObject.transform.position + new Vector3(dims.x * 0.5f, dims.y * 0.5f, 0);
 				CreateTileHighlight(t);
-
-				sizeX += t.TileSet.WorldDims.x;
-				maxHeight = Mathf.Max(maxHeight, t.TileSet.WorldDims.y);
 			}
-			
-			sizeY += maxHeight;
 		}
 
-		mainBounds = new Bounds(map.MapObject.transform.position, new Vector3(sizeX, sizeY, 1f));
+		mainBounds = new Bounds(map.MapObject.transform.position + new Vector3(sizeX * 0.5f, -sizeY * 0.5f, 0f),
+		                        new Vector3(sizeX, sizeY, 1f));
 	}
 	
-	private void CreateTileHighlight(Tile t)
-	{
+	private void CreateTileHighlight(Tile t) {
 		GameObject tileObject = t.TileObject;
 
 		GameObject highlightObject = new GameObject(tileObject.name + "-highlight");
@@ -157,7 +149,7 @@ public class GameMap : Singleton<GameMap>
 		
 		highlightRenderer.sprite = null;
 		// Use Layer's name as Sorting Layer
-		highlightRenderer.sortingLayerName = tileObject.renderer.sortingLayerName;
+		highlightRenderer.sortingLayerName = tileObject.GetComponent<Renderer>().sortingLayerName;
 		
 		highlightObject.transform.position = t.centerPos;
 
@@ -189,7 +181,7 @@ public class GameMap : Singleton<GameMap>
 		        int characterId = o.GetPropertyAsInt("character id");
 				int characterOwner = o.GetPropertyAsInt("character owner");
 
-				GameCharacter c = CharacterManager.Instance.BuildCharacter(characterId, PlayerManager.Instance.GetPlayer(characterOwner), 0, 0);
+				GameCharacter c = CharacterBuilder.Instance.BuildCharacter(characterId, PlayerManager.Instance.GetPlayer(characterOwner), 0, 0);
 
 				if(c == null) {
 					Debug.LogError("Character (ID: " + characterId + ") could not be built.");
@@ -200,11 +192,9 @@ public class GameMap : Singleton<GameMap>
 			} else if(o.Type == "SpawnPoint") {
 				// make a spawn point unit at the location
 				spawnTiles.Add(mainGrid[(int)tileIndices.x, (int)tileIndices.y]);
-				Object resourceObject = Resources.Load ("Prefabs/SpawnPoint");
-				GameObject newPrefab = Instantiate(resourceObject) as GameObject;
-				GameUnit temp = newPrefab.GetComponent<GameUnit>();
-				temp.name = (spawnTiles.Count - 1) + "-spawn";
-				temp.SetTile((int)tileIndices.x, (int)tileIndices.y);
+				GameUnit newSpawnPoint = (GameUnit)Instantiate(spawnPointPrefab);
+				newSpawnPoint.name = (spawnTiles.Count - 1) + "-spawn";
+				newSpawnPoint.SetTile((int)tileIndices.x, (int)tileIndices.y);
 			}
 		}
 	}
@@ -321,6 +311,13 @@ public class GameMap : Singleton<GameMap>
 		mainUnits.Add(unit);
 	}
 
+	public void KillCharacter(GameCharacter character, GameCharacter source) {
+		RemoveUnit(character);
+
+		if(killCharacterCallback != null)
+			killCharacterCallback(character, source);
+	}
+
 	public void RemoveUnit(GameUnit unit) {
 		int index = unit.GetTileY() * mainGraph.Width + unit.GetTileX();
 		mainGraph.nodes[index].Walkable = true;
@@ -337,6 +334,23 @@ public class GameMap : Singleton<GameMap>
 
 		unit.currTile.currUnit = null;
 		Destroy(unit.gameObject);
+	}
+
+
+	#endregion
+
+	#region Event
+
+
+	/// <summary>
+	/// Note: This uses the publisher/subscriber model.
+	/// </summary>
+	public void SubscribeKillCharacterEvent(KillCharacterDelegate callback) {
+		killCharacterCallback += callback;
+	}
+
+	public void UnsubscribeKillCharacterEvent(KillCharacterDelegate callback) {
+		killCharacterCallback -= callback;
 	}
 
 

@@ -43,9 +43,10 @@ public class Move : MonoBehaviour
 
 		Tile temp = pathing.currTile;
 		pathing.SetTile (target);
-		health.AddLink(temp);
-		if(health.currSize > health.maxSize)
+		if(health.currSize >= health.maxSize && health.currSize > 1)
 			health.RemoveTail();
+
+		health.AddLink(temp);
 
 		movesLeft--;
 	}
