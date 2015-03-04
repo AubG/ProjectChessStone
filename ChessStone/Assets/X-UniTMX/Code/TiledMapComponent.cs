@@ -41,11 +41,11 @@ public class TiledMapComponent : MonoBehaviour {
 		set { tiledMap = value; }
 	}
 
-	public void Awake()
+	public void Start()
 	{
 		if (isToLoadOnStart) Initialize();
 	}
-
+	
 	// Use this for initialization
 	public bool Initialize()
 	{
@@ -95,11 +95,11 @@ public class TiledMapComponent : MonoBehaviour {
 					{
 						if (is2DCollider)
 						{
-							Destroy(newColliderObject.collider2D);
+							Destroy(newColliderObject.GetComponent<Collider2D>());
 						}
 						else
 						{
-							Destroy(newColliderObject.collider);
+							Destroy(newColliderObject.GetComponent<Collider>());
 						}
 					}
 

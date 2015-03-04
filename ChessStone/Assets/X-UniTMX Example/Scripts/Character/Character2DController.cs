@@ -113,7 +113,7 @@ namespace X_UniTMX_Example {
 					shootClone.transform.position = transform.position;
 					Vector2 directionShoot = new Vector2(velocityVector.x,velocityVector.y);
 					directionShoot.Normalize();
-					shootClone.rigidbody2D.velocity = directionShoot*ShootVelocity;
+					shootClone.GetComponent<Rigidbody2D>().velocity = directionShoot*ShootVelocity;
 					canShoot = false;
 					numberShoots--;
 					PlayerPrefs.SetInt("PlayerShoots",numberShoots);
@@ -123,7 +123,7 @@ namespace X_UniTMX_Example {
 
 		void ApplyPlayerVelocity ()
 		{
-			rigidbody2D.velocity = velocityVector;
+			GetComponent<Rigidbody2D>().velocity = velocityVector;
 		}
 
 		void CalculateShootTime ()

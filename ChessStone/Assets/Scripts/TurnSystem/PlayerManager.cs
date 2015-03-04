@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -43,6 +45,10 @@ public class PlayerManager : Singleton<PlayerManager>
 
 	public Player GetLocalPlayer() {
 		return players[localPlayerIndex];
+	}
+
+	public IEnumerable<Player> GetPlayersMatching(Func<Player, int, bool> predicate) {
+		return players.Where<Player>(predicate);
 	}
 	
 	

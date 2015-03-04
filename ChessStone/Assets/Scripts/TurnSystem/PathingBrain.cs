@@ -79,7 +79,8 @@ public class PathingBrain : MonoBehaviour
 	}
 	
 	public void OnDisable() {
-		seeker.pathCallback -= OnPathComplete;
+		if(seeker != null)
+			seeker.pathCallback -= OnPathComplete;
 	}
 	
 	

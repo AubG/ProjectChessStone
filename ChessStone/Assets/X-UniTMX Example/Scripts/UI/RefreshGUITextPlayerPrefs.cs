@@ -20,13 +20,13 @@ public class RefreshGUITextPlayerPrefs : MonoBehaviour {
 			countTime = 0.0f;
 			switch(typeRefresh) {
 			case TypeRefreshPlayerPrefs.INT:
-				guiText.text = "" + PlayerPrefs.GetInt(keyPlayerPrefs,defaultValueInt);
+				GetComponent<GUIText>().text = "" + PlayerPrefs.GetInt(keyPlayerPrefs,defaultValueInt);
 				break;
 			case TypeRefreshPlayerPrefs.STRING:
-				guiText.text = PlayerPrefs.GetString(keyPlayerPrefs,defaultValueString);
+				GetComponent<GUIText>().text = PlayerPrefs.GetString(keyPlayerPrefs,defaultValueString);
 				break;
 			case TypeRefreshPlayerPrefs.FLOAT:
-				guiText.text = "" + PlayerPrefs.GetFloat(keyPlayerPrefs,defaultValueFloat);
+				GetComponent<GUIText>().text = "" + PlayerPrefs.GetFloat(keyPlayerPrefs,defaultValueFloat);
 				break;
 			}
 		}

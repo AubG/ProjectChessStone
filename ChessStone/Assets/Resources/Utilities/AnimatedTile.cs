@@ -39,7 +39,7 @@ public class AnimatedTile : MonoBehaviour {
 			return;
 		}
 
-		_thisRenderer = renderer as SpriteRenderer;
+		_thisRenderer = GetComponent<Renderer>() as SpriteRenderer;
 		_animationFPS = 1 / AnimationFPS;
 		// build sprite frames list
 		_spriteFrames = new List<Sprite>();

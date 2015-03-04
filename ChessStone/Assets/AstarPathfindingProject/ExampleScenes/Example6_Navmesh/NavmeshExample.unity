@@ -156,6 +156,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 4
 --- !u!4 &16
 Transform:
   m_ObjectHideFlags: 0
@@ -167,6 +168,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 7
 --- !u!4 &18
 Transform:
   m_ObjectHideFlags: 0
@@ -178,6 +180,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 0
 --- !u!4 &19
 Transform:
   m_ObjectHideFlags: 0
@@ -189,6 +192,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 3
 --- !u!4 &24
 Transform:
   m_ObjectHideFlags: 0
@@ -200,6 +204,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 5
 --- !u!20 &26
 Camera:
   m_ObjectHideFlags: 0
@@ -227,8 +232,11 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
   m_HDR: 0
   m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: .0219999999
 --- !u!23 &27
 Renderer:
   m_ObjectHideFlags: 0
@@ -247,9 +255,8 @@ Renderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_SortingLayer: 0
-  m_SortingOrder: 0
   m_SortingLayerID: 0
+  m_SortingOrder: 0
 --- !u!33 &29
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -371,17 +378,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   astarData:
     hasBeenReverted: 0
-    data: 504b0304140000080800fa8acc44a5848ba522010000ca0100000b0024006772617068302e6a736f6e0a002000000000000100180008665a515286cf01fe655a515286cf01f4655a515286cf017551db4a033110fd95659e634915b7cb429f544a11d782d517119926b335984d965c6a2ff4df4dda7a79500686cc39730e67c80e965149a877b0421d096a9095945529f948c84bc4053fe3b2e2adb81856d496a5a838ec19781b9da03bf26f593a353ea01134bd86fa7c543268b0cb5606575d5a79a53576bda6f2340383f9a6cf0b8f4685cd8d592a43836cc68a5f082b9ec87965cd980f0ec58aaba843743436148343cd8a595c68256e6933b7ef64c6266a9de3d9b6f51472b435d49cc1e6d0b7a927d2d98021d9fe437b813a651b324021a2c3400da1231f1a2b131e5c24062ac554a867645087a3dcf664be6873bcbfc155be6ae2b0cf474b871f13b5edacffb169ed837044e6fea06e51fb0477189c5a7f7f4a5a7f1e327eaa3f5f2ffbfd27504b0304140000080800fa8acc445f9ac82f7500000084000000090024006d6574612e6a736f6e0a00200000000000010018003e7b5a515286cf013e7b5a515286cf01347b5a515286cf011d8cb10e82301040ffe566244708b561757092b81b86b377a51d6c092d24c6f0ef50b737bcf77eb0c9927c0cd0435b7750c1b4d0ec12f4cd89abe7935ec09a592bc6abe18ee88d17648dd6b48d16ab94d1086305f93bcb401ff9174fcacefac03e4cf540db4392bb9771114364b9c535e462e2b81f504b01022d00140000080800fa8acc44a5848ba522010000ca0100000b00240000000000000000000000000000006772617068302e6a736f6e0a002000000000000100180008665a515286cf01fe655a515286cf01f4655a515286cf01504b01022d00140000080800fa8acc445f9ac82f750000008400000009002400000000000000000000006f0100006d6574612e6a736f6e0a00200000000000010018003e7b5a515286cf013e7b5a515286cf01347b5a515286cf01504b05060000000002000200b80000002f0200000000
+    data: 504b0304140000080800b0a0424607c2976a15010000b90100000b0024006772617068302e6a736f6e0a0020000000000001001800f42c61381b3fd001f42c61381b3fd001e02c61381b3fd00175514d4b033110fd2bcb9c63c922ae4b614f223d886bc1ea4544a6c96c0d6693251fb5dbd2ff6ed256ed41191832efcd1bde233b58452561ba8335ea483005594b5957925f0b7985b8e4175cd6bc1397654d5d55899ac39e81b7d109ba27ff9ea52df6596970dd27e48d36d80f9aaad30c0c16e390179e8c0ae3ad59294393ac65c519c28a67725e59d3f0c9a158711375888e1a433138d4ac98c7a556e28ec685fd20d398a8757663bbce53c84e3630e50cc643dfa69e4867038674f61fda0bd4c95bc90085880e03b5848e7c68ad4c78709118a86453a19e93411d8e723b90f9a6cd317f8beb9c6ae670c8a1a5c3cf99daf6d6ff9ee9eca37044e6e1a0ee50fb04f7189cdafcfc415a7f29193fd59fafd7fdfe0b504b0304140000080800b0a04246552ac6d97800000088000000090024006d6574612e6a736f6e0a0020000000000001001800703861381b3fd001703861381b3fd001663861381b3fd0011d8cb10e82301040ffe5666c8e104a65757092b81b86b377850eb684161263fc77a9db1bde7b1fd8654d3e06e8a151ad3aab0e2a98565ae6047d7de0e6f9a007b061369ab1b3dc123df1846cd0d9a636e2b4b60661ac20bf1719e825ffe24e79763eb00f931a68bf499aaf655cc410592e710bb998387e7f504b01022d00140000080800b0a0424607c2976a15010000b90100000b00240000000000000000000000000000006772617068302e6a736f6e0a0020000000000001001800f42c61381b3fd001f42c61381b3fd001e02c61381b3fd001504b01022d00140000080800b0a04246552ac6d978000000880000000900240000000000000000000000620100006d6574612e6a736f6e0a0020000000000001001800703861381b3fd001703861381b3fd001663861381b3fd001504b05060000000002000200b8000000250200000000
     data_backup: 
+    file_cachedStartup: {fileID: 0}
     data_cachedStartup: 
     revertData: 
     cacheStartup: 0
-    compress: 0
   showNavGraphs: 1
   showUnwalkableNodes: 1
   debugMode: 0
   debugFloor: 0
-  debugRoof: 10000
+  debugRoof: 1
+  manualDebugFloorRoof: 0
   showSearchTree: 1
   unwalkableNodeDebugSize: .300000012
   logPathResults: 2
@@ -439,9 +447,14 @@ MonoBehaviour:
   minAreaSize: 10
   limitGraphUpdates: 1
   maxGraphUpdateFreq: .200000003
-  lastScanTime: .200450003
+  lastScanTime: .149303004
   inGameDebugPath: 
   isScanning: 0
+  euclideanEmbedding:
+    mode: 0
+    seed: 0
+    pivotPointRoot: {fileID: 0}
+    spreadOutCount: 1
   showGraphs: 1
 --- !u!196 &48
 NavMeshSettings:
@@ -493,9 +506,8 @@ Renderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_SortingLayer: 0
-  m_SortingOrder: 0
   m_SortingLayerID: 0
+  m_SortingOrder: 0
 --- !u!33 &578526425
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -514,6 +526,7 @@ Transform:
   m_LocalScale: {x: .687573671, y: .687573731, z: .687573671}
   m_Children: []
   m_Father: {fileID: 1797897903}
+  m_RootOrder: 1
 --- !u!1 &741409961
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,6 +554,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 1
 --- !u!132 &741409963
 GUIText:
   m_ObjectHideFlags: 0
@@ -626,6 +640,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 2
 --- !u!1 &1086680570
 GameObject:
   m_ObjectHideFlags: 0
@@ -654,6 +669,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1797897903}
+  m_RootOrder: 2
 --- !u!114 &1086680572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -711,6 +727,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1797897903}
+  m_RootOrder: 0
 --- !u!124 &1552443641
 Behaviour:
   m_ObjectHideFlags: 0
@@ -745,8 +762,11 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
   m_HDR: 0
   m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: .0219999999
 --- !u!1 &1797897902
 GameObject:
   m_ObjectHideFlags: 0
@@ -781,6 +801,7 @@ Transform:
   - {fileID: 578526426}
   - {fileID: 1086680571}
   m_Father: {fileID: 0}
+  m_RootOrder: 6
 --- !u!114 &1797897905
 MonoBehaviour:
   m_ObjectHideFlags: 0

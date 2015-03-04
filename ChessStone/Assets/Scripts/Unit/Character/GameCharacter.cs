@@ -72,8 +72,7 @@ public class GameCharacter : GameUnit
 	#region Initialization
 
 
-	void Start() {
-		metaRenderer.enabled = false;
+	void Awake() {
 		unitType = UnitType.Character;
 	}
 

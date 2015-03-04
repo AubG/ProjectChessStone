@@ -50,7 +50,7 @@ public class SpellBox : MonoBehaviour
 	}
 
 	public SpellData GetSpell (int spellId) {
-		return SpellManager.Instance.GetSpellData(spellId);
+		return SpellBuilder.Instance.GetSpellData(spellId);
 	}
 
 	public SpellData GetSpellBySlotIndex(int index) {

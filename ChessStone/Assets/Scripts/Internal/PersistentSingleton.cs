@@ -49,6 +49,7 @@ public class PersistentSingleton<T> : MonoBehaviour where T : MonoBehaviour
 			_instance = this as T;
 			DontDestroyOnLoad(this.gameObject);
 		} else {
+			Debug.Log (this.name);
 			Destroy (this.gameObject);
 		}
 	}

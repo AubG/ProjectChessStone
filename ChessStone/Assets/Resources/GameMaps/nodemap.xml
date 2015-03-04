@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="22" height="14" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="map_tileset" tilewidth="32" tileheight="32">
+  <image source="map_tileset.png" width="128" height="128"/>
+ </tileset>
+ <layer name="Tiles" width="22" height="14">
+  <data encoding="base64" compression="zlib">
+   eJzjYWBg4KER5gZiViBmhvKZoHxuKpnPiEZTC7MBMRcQs1PZXCYamAlzLzOVzYTFHS3cO4pHMa0wADnDDgA=
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="22" height="14">
+  <object name="0-merchant" type="MerchantNode" x="64" y="192" width="32" height="32">
+   <properties>
+    <property name="merchant id" value="0"/>
+    <property name="node domain id" value="0"/>
+    <property name="node name" value="Fred"/>
+   </properties>
+  </object>
+  <object name="0-stage" type="StageNode" x="32" y="32" width="32" height="32">
+   <properties>
+    <property name="node domain id" value="1"/>
+    <property name="node name" value="DAE Archives #544"/>
+    <property name="stage id" value="0"/>
+   </properties>
+  </object>
+  <object name="1-stage" type="StageNode" x="224" y="32" width="32" height="32">
+   <properties>
+    <property name="node domain id" value="2"/>
+    <property name="node name" value="WS Cloud Stash (Iota)"/>
+    <property name="stage id" value="1"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
